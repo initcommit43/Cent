@@ -44,6 +44,11 @@ class Money implements Comparable<Money> {
     }
   }
 
+  bool operator <(Money other) => compareTo(other) < 0;
+  bool operator >(Money other) => compareTo(other) > 0;
+  bool operator <=(Money other) => compareTo(other) <= 0;
+  bool operator >=(Money other) => compareTo(other) >= 0;
+
   @override
   int compareTo(Money other) {
     _checkSameCurrency(other);
