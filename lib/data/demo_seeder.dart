@@ -202,7 +202,7 @@ class DemoSeeder {
         await _spend(
           day,
           'Groceries',
-          ['Billa', 'Hofer', 'Spar', 'Lidl'],
+          ['Billa', 'Hofer', 'Billa', 'Spar', 'Lidl'],
           1800,
           6200,
           _main,

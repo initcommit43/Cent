@@ -49,13 +49,14 @@ class TransactionsRepository {
 
   final AppDatabase _db;
 
-  /// Entries with `from <= occurredAt < to`, newest first.
+  /// Entries with `from <= occurredAt < to`, newest first. Overview lists
+  /// show each transfer once, from the sending side.
   Stream<List<EntryView>> watchRange(
     DateTime from,
     DateTime to, {
     EntryFilter filter = const EntryFilter(),
   }) {
-    final query = _joined()
+    final query = _joined(hideIncomingTransfers: true)
       ..where(
         _db.transactions.occurredAt.isBiggerOrEqualValue(from) &
             _db.transactions.occurredAt.isSmallerThanValue(to),
@@ -65,13 +66,13 @@ class TransactionsRepository {
   }
 
   Stream<List<EntryView>> watchRecent({int limit = 5}) {
-    final query = _joined()..limit(limit);
+    final query = _joined(hideIncomingTransfers: true)..limit(limit);
     return query.watch().map(_toViews);
   }
 
   /// Searches all history, so results outside the visible month still show.
   Stream<List<EntryView>> watchSearch(EntryFilter filter, {int limit = 100}) {
-    final query = _joined()..limit(limit);
+    final query = _joined(hideIncomingTransfers: true)..limit(limit);
     _applyFilter(query, filter);
     return query.watch().map(_toViews);
   }
@@ -204,20 +205,57 @@ class TransactionsRepository {
   int _signed(TransactionKind kind, int minor) =>
       kind == TransactionKind.expense ? -minor.abs() : minor.abs();
 
-  JoinedSelectStatement<HasResultSet, dynamic> _joined() {
-    return _db.select(_db.transactions).join([
-      innerJoin(
-        _db.accounts,
-        _db.accounts.id.equalsExp(_db.transactions.accountId),
-      ),
-      leftOuterJoin(
-        _db.categories,
-        _db.categories.id.equalsExp(_db.transactions.categoryId),
-      ),
-    ])..orderBy([
-      OrderingTerm.desc(_db.transactions.occurredAt),
-      OrderingTerm.desc(_db.transactions.id),
-    ]);
+  /// Number of entries and their total for [title] in the month containing
+  /// [month], in that entry's currency.
+  Future<({int count, int totalMinor})> merchantMonth(
+    String title,
+    String currency,
+    DateTime month,
+  ) async {
+    final from = DateTime(month.year, month.month);
+    final to = DateTime(month.year, month.month + 1);
+    final row = await _db
+        .customSelect(
+          'SELECT COUNT(*) AS n, COALESCE(SUM(amount_minor), 0) AS total '
+          'FROM transactions WHERE title = ? AND currency = ? '
+          "AND kind = 'expense' AND occurred_at >= ? AND occurred_at < ?",
+          variables: [
+            Variable.withString(title),
+            Variable.withString(currency),
+            Variable.withDateTime(from),
+            Variable.withDateTime(to),
+          ],
+          readsFrom: {_db.transactions},
+        )
+        .getSingle();
+    return (count: row.read<int>('n'), totalMinor: row.read<int>('total'));
+  }
+
+  JoinedSelectStatement<HasResultSet, dynamic> _joined({
+    bool hideIncomingTransfers = false,
+  }) {
+    final query =
+        _db.select(_db.transactions).join([
+          innerJoin(
+            _db.accounts,
+            _db.accounts.id.equalsExp(_db.transactions.accountId),
+          ),
+          leftOuterJoin(
+            _db.categories,
+            _db.categories.id.equalsExp(_db.transactions.categoryId),
+          ),
+        ])..orderBy([
+          OrderingTerm.desc(_db.transactions.occurredAt),
+          OrderingTerm.desc(_db.transactions.id),
+        ]);
+    if (hideIncomingTransfers) {
+      final t = _db.transactions;
+      query.where(
+        t.kind.equalsValue(TransactionKind.transfer).not() |
+            t.amountMinor.isSmallerThanValue(0),
+      );
+    }
+    return query;
   }
 
   void _applyFilter(
