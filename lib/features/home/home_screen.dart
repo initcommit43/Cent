@@ -45,6 +45,13 @@ class HomeScreen extends ConsumerWidget {
     return LargeTitleScaffold(
       title: l10n.tabHome,
       band: true,
+      actions: [
+        CentIconButton(
+          icon: CentIcons.settings,
+          label: l10n.settings,
+          onPressed: () => context.push(Routes.settings),
+        ),
+      ],
       lead: summary == null
           ? const SizedBox(height: 180)
           : _BalanceCard(summary: summary),
