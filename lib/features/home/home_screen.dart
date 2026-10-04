@@ -1,8 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/database/app_database.dart';
 import '../../core/format/dates.dart';
 import '../../core/money/money.dart';
 import '../../core/money/money_format.dart';
@@ -11,12 +12,15 @@ import '../../core/theme/cent_icons.dart';
 import '../../core/theme/cent_theme.dart';
 import '../../core/theme/cent_tokens.dart';
 import '../../core/theme/cent_typography.dart';
+import '../../core/widgets/cent_button.dart';
 import '../../core/widgets/cent_card.dart';
 import '../../core/widgets/large_title_scaffold.dart';
 import '../../core/widgets/list_parts.dart';
 import '../../data/accounts_repository.dart';
 import '../../data/providers.dart';
 import '../../l10n/app_localizations.dart';
+import '../accounts/account_style.dart';
+import '../add_transaction/add_transaction_sheet.dart';
 import '../transactions/widgets/entry_row.dart';
 import 'home_providers.dart';
 
@@ -159,6 +163,13 @@ class _BalanceCard extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 20),
+          CentButton(
+            label: l10n.addTransaction,
+            icon: CentIcons.add,
+            style: CentButtonStyle.onDark,
+            onPressed: () => unawaited(showAddTransaction(context)),
+          ),
         ],
       ),
     );
@@ -233,20 +244,6 @@ class _AccountsStrip extends StatelessWidget {
     );
   }
 }
-
-IconData accountIcon(AccountType type) => switch (type) {
-  AccountType.checking => CentIcons.checking,
-  AccountType.savings => CentIcons.savings,
-  AccountType.cash => CentIcons.cash,
-  AccountType.card => CentIcons.card,
-};
-
-CentTint accountTint(AccountType type) => switch (type) {
-  AccountType.checking => CentTint.copper,
-  AccountType.savings => CentTint.patina,
-  AccountType.cash => CentTint.brass,
-  AccountType.card => CentTint.blush,
-};
 
 class _MonthCard extends StatelessWidget {
   const _MonthCard({required this.summary, required this.now});

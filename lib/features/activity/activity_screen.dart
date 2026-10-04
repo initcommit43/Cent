@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -19,6 +21,7 @@ import '../../core/widgets/list_parts.dart';
 import '../../core/widgets/search_field.dart';
 import '../../data/providers.dart';
 import '../../l10n/app_localizations.dart';
+import '../add_transaction/add_transaction_sheet.dart';
 import '../transactions/entry_math.dart';
 import '../transactions/widgets/entry_row.dart';
 import 'activity_providers.dart';
@@ -46,6 +49,11 @@ class ActivityScreen extends ConsumerWidget {
           icon: CentIcons.filter,
           label: l10n.filters,
           onPressed: () => showFilterSheet(context),
+        ),
+        CentIconButton(
+          icon: CentIcons.add,
+          label: l10n.addTransaction,
+          onPressed: () => unawaited(showAddTransaction(context)),
         ),
       ],
       lead: _ActivityHeader(

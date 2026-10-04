@@ -2,6 +2,7 @@ import 'package:cent/app.dart';
 import 'package:cent/core/database/app_database.dart';
 import 'package:cent/data/providers.dart';
 import 'package:drift/native.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -35,6 +36,11 @@ void main() {
     await pumpApp(tester);
 
     expect(find.text('Total balance'), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.text('RECENT'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
     expect(find.text('RECENT'), findsOneWidget);
     expect(find.text('Main account'), findsWidgets);
   });
