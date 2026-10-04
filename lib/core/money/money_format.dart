@@ -22,11 +22,14 @@ String formatMoney(
   Money money, {
   SignDisplay sign = SignDisplay.auto,
   String? locale,
+
+  /// Rounds to whole units, for chart labels where cents are noise.
+  bool whole = false,
 }) {
   final format = NumberFormat.currency(
     locale: locale ?? 'en_US',
     symbol: money.currency.symbol,
-    decimalDigits: money.currency.decimals,
+    decimalDigits: whole ? 0 : money.currency.decimals,
   );
   // Doubles are fine here: this is display only, never arithmetic.
   final body = format.format(
