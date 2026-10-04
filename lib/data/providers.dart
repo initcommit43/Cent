@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/database/app_database.dart';
@@ -7,6 +9,7 @@ import 'budgets_repository.dart';
 import 'categories_repository.dart';
 import 'demo_seeder.dart';
 import 'rates_repository.dart';
+import 'rates_service.dart';
 import 'settings_repository.dart';
 import 'transactions_repository.dart';
 
@@ -60,6 +63,14 @@ final converterProvider = StreamProvider<CurrencyConverter>((ref) async* {
   yield* ref.watch(ratesRepositoryProvider).watchConverter(base);
 });
 
+final ratesServiceProvider = Provider(
+  (ref) => RatesService(
+    rates: ref.watch(ratesRepositoryProvider),
+    settings: ref.watch(settingsRepositoryProvider),
+    clock: ref.watch(clockProvider),
+  ),
+);
+
 /// Prepares the database before the first frame.
 final appStartupProvider = FutureProvider<void>((ref) async {
   final db = ref.watch(databaseProvider);
@@ -72,4 +83,12 @@ final appStartupProvider = FutureProvider<void>((ref) async {
   if (!hasAccounts) {
     await DemoSeeder(db, now: ref.read(clockProvider)()).seed();
   }
+  // Runs in the background so a slow network never delays the first frame.
+  // Read the setting directly: Riverpod pauses providers that nothing
+  // listens to yet, so awaiting baseCurrencyProvider here would never finish.
+  final code = await ref
+      .read(settingsRepositoryProvider)
+      .read(SettingKeys.baseCurrency);
+  final base = code == null ? Currency.eur : Currency.of(code);
+  unawaited(ref.read(ratesServiceProvider).refreshIfStale(base));
 });

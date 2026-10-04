@@ -6,6 +6,8 @@ import 'package:drift/native.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../helpers.dart';
+
 void main() {
   late ProviderContainer container;
   late AppDatabase db;
@@ -13,12 +15,7 @@ void main() {
 
   setUp(() async {
     db = AppDatabase(NativeDatabase.memory());
-    container = ProviderContainer(
-      overrides: [
-        databaseProvider.overrideWithValue(db),
-        clockProvider.overrideWithValue(() => now),
-      ],
-    );
+    container = ProviderContainer(overrides: testOverrides(db, now));
     await container.read(appStartupProvider.future);
   });
 
