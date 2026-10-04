@@ -8,8 +8,10 @@ import 'accounts_repository.dart';
 import 'budgets_repository.dart';
 import 'categories_repository.dart';
 import 'demo_seeder.dart';
+import 'goals_repository.dart';
 import 'rates_repository.dart';
 import 'rates_service.dart';
+import 'recurring_repository.dart';
 import 'settings_repository.dart';
 import 'transactions_repository.dart';
 
@@ -42,6 +44,14 @@ final ratesRepositoryProvider = Provider(
 
 final budgetsRepositoryProvider = Provider(
   (ref) => BudgetsRepository(ref.watch(databaseProvider)),
+);
+
+final goalsRepositoryProvider = Provider(
+  (ref) => GoalsRepository(ref.watch(databaseProvider)),
+);
+
+final recurringRepositoryProvider = Provider(
+  (ref) => RecurringRepository(ref.watch(databaseProvider)),
 );
 
 final accountsProvider = StreamProvider<List<AccountWithBalance>>(
@@ -83,6 +93,9 @@ final appStartupProvider = FutureProvider<void>((ref) async {
   if (!hasAccounts) {
     await DemoSeeder(db, now: ref.read(clockProvider)()).seed();
   }
+  await ref
+      .read(recurringRepositoryProvider)
+      .materializeDue(ref.read(clockProvider)());
   // Runs in the background so a slow network never delays the first frame.
   // Read the setting directly: Riverpod pauses providers that nothing
   // listens to yet, so awaiting baseCurrencyProvider here would never finish.
