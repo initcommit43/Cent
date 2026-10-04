@@ -1,0 +1,12 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Local tooling
+CLAUDE.md
+CLAUDE.local.md
+.claude/
+design.md
+plan.md
+*.prompt.md
