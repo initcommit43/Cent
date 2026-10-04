@@ -20,6 +20,7 @@ import '../../core/widgets/large_title_scaffold.dart';
 import '../../core/widgets/list_parts.dart';
 import '../../core/widgets/search_field.dart';
 import '../../data/providers.dart';
+import '../../data/transactions_repository.dart';
 import '../../l10n/app_localizations.dart';
 import '../add_transaction/add_transaction_sheet.dart';
 import '../transactions/entry_math.dart';
@@ -27,11 +28,39 @@ import '../transactions/widgets/entry_row.dart';
 import 'activity_providers.dart';
 import 'filter_sheet.dart';
 
-class ActivityScreen extends ConsumerWidget {
+class ActivityScreen extends ConsumerStatefulWidget {
   const ActivityScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ActivityScreen> createState() => _ActivityScreenState();
+}
+
+class _ActivityScreenState extends ConsumerState<ActivityScreen> {
+  final _search = TextEditingController();
+  final _searchFocus = FocusNode();
+  bool _searching = false;
+  String _query = '';
+
+  @override
+  void dispose() {
+    _search.dispose();
+    _searchFocus.dispose();
+    super.dispose();
+  }
+
+  void _setSearching(bool active) {
+    setState(() {
+      _searching = active;
+      if (!active) {
+        _search.clear();
+        _query = '';
+      }
+    });
+    if (!active) _searchFocus.unfocus();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final entries = ref.watch(activityEntriesProvider).value;
     final converter = ref.watch(converterProvider).value;
@@ -56,70 +85,157 @@ class ActivityScreen extends ConsumerWidget {
           onPressed: () => unawaited(showAddTransaction(context)),
         ),
       ],
-      lead: _ActivityHeader(
-        totals: entries == null || converter == null
-            ? null
-            : EntryTotals(entries, converter),
+      searchField: CentSearchField(
+        placeholder: l10n.searchTransactions,
+        controller: _search,
+        focusNode: _searchFocus,
+        onChanged: (value) => setState(() => _query = value),
       ),
-      slivers: [
-        if (groups != null && groups.isEmpty)
-          SliverPadding(
-            padding: const EdgeInsets.only(top: 72),
-            sliver: SliverToBoxAdapter(
-              child: filter.isEmpty
-                  ? EmptyState(
-                      icon: CentIcons.named('receipt'),
-                      title: l10n.noTransactionsIn(
-                        monthName(context, ref.watch(activityMonthProvider)),
-                      ),
-                      body: l10n.noTransactionsInBody,
-                    )
-                  : EmptyState(
-                      icon: CentIcons.search,
-                      title: l10n.noMatches,
-                      body: l10n.noMatchesBody,
-                      action: TextButton(
-                        onPressed: ref
-                            .read(activityFilterProvider.notifier)
-                            .reset,
-                        child: Text(l10n.clearFilters),
-                      ),
-                    ),
+      onSearchActiveChanged: _setSearching,
+      lead: _searching
+          ? null
+          : _ActivityHeader(
+              totals: entries == null || converter == null
+                  ? null
+                  : EntryTotals(entries, converter),
             ),
-          ),
-        if (groups != null)
-          for (final (day, items) in groups)
-            SliverPadding(
-              padding: EdgeInsets.fromLTRB(margin, CentSpace.xl, margin, 0),
-              sliver: SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SectionHeader(
-                      title: dayLabel(context, day, now),
-                      trailing: converter == null
-                          ? null
-                          : _dayTotal(EntryTotals(items, converter).net),
-                    ),
-                    CentGroup(
-                      children: [
-                        for (var i = 0; i < items.length; i++)
-                          EntryRow(
-                            view: items[i],
-                            now: now,
-                            showDivider: i < items.length - 1,
-                            onTap: () => context.push(
-                              Routes.activityEntry(items[i].entry.id),
+      slivers: _searching
+          ? _searchSlivers(context, now, margin)
+          : [
+              if (groups != null && groups.isEmpty)
+                SliverPadding(
+                  padding: const EdgeInsets.only(top: 72),
+                  sliver: SliverToBoxAdapter(
+                    child: filter.isEmpty
+                        ? EmptyState(
+                            icon: CentIcons.named('receipt'),
+                            title: l10n.noTransactionsIn(
+                              monthName(
+                                context,
+                                ref.watch(activityMonthProvider),
+                              ),
+                            ),
+                            body: l10n.noTransactionsInBody,
+                          )
+                        : EmptyState(
+                            icon: CentIcons.search,
+                            title: l10n.noMatches,
+                            body: l10n.noMatchesBody,
+                            action: TextButton(
+                              onPressed: ref
+                                  .read(activityFilterProvider.notifier)
+                                  .reset,
+                              child: Text(l10n.clearFilters),
                             ),
                           ),
-                      ],
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-      ],
+              if (groups != null)
+                for (final (day, items) in groups)
+                  SliverPadding(
+                    padding: EdgeInsets.fromLTRB(
+                      margin,
+                      CentSpace.xl,
+                      margin,
+                      0,
+                    ),
+                    sliver: SliverToBoxAdapter(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          SectionHeader(
+                            title: dayLabel(context, day, now),
+                            trailing: converter == null
+                                ? null
+                                : _dayTotal(EntryTotals(items, converter).net),
+                          ),
+                          CentGroup(
+                            children: [
+                              for (var i = 0; i < items.length; i++)
+                                EntryRow(
+                                  view: items[i],
+                                  now: now,
+                                  showDivider: i < items.length - 1,
+                                  onTap: () => context.push(
+                                    Routes.activityEntry(items[i].entry.id),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+            ],
     );
+  }
+
+  List<Widget> _searchSlivers(
+    BuildContext context,
+    DateTime now,
+    double margin,
+  ) {
+    final c = context.colors;
+    final l10n = AppLocalizations.of(context);
+    final query = _query.trim();
+    final results = query.isEmpty
+        ? const <EntryView>[]
+        : ref.watch(searchResultsProvider(query)).value ?? const [];
+
+    if (query.isEmpty) {
+      return [
+        SliverPadding(
+          padding: EdgeInsets.fromLTRB(margin + CentSpace.lg, 20, margin, 0),
+          sliver: SliverToBoxAdapter(
+            child: Text(
+              l10n.searchTip,
+              style: CentType.footnote.copyWith(color: c.mute),
+            ),
+          ),
+        ),
+      ];
+    }
+    if (results.isEmpty) {
+      return [
+        SliverPadding(
+          padding: const EdgeInsets.only(top: 72),
+          sliver: SliverToBoxAdapter(
+            child: EmptyState(
+              icon: CentIcons.search,
+              title: l10n.noMatchesFor(query),
+              body: l10n.noMatchesBody,
+            ),
+          ),
+        ),
+      ];
+    }
+    return [
+      SliverPadding(
+        padding: EdgeInsets.fromLTRB(margin, CentSpace.lg, margin, 0),
+        sliver: SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SectionHeader(title: l10n.resultsCount(results.length)),
+              CentGroup(
+                children: [
+                  for (var i = 0; i < results.length; i++)
+                    EntryRow(
+                      view: results[i],
+                      now: now,
+                      subtitle: EntrySubtitle.date,
+                      showDivider: i < results.length - 1,
+                      onTap: () => context.push(
+                        Routes.activityEntry(results[i].entry.id),
+                      ),
+                    ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    ];
   }
 
   String? _dayTotal(Money net) =>
@@ -166,12 +282,6 @@ class _ActivityHeader extends ConsumerWidget {
                 style: CentType.subheadlineTabular.copyWith(color: c.secondary),
               ),
           ],
-        ),
-        const SizedBox(height: CentSpace.sm),
-        CentSearchField(
-          hint: l10n.searchTransactions,
-          readOnly: true,
-          onTap: () => context.push(Routes.activitySearch),
         ),
         const SizedBox(height: CentSpace.xs),
         SingleChildScrollView(
