@@ -7,6 +7,7 @@ import '../../features/accounts/account_detail_screen.dart';
 import '../../features/accounts/accounts_screen.dart';
 import '../../features/activity/activity_screen.dart';
 import '../../features/home/home_screen.dart';
+import '../../features/insights/category_insight_screen.dart';
 import '../../features/insights/insights_screen.dart';
 import '../../features/plan/budget_detail_screen.dart';
 import '../../features/plan/goal_detail_screen.dart';
@@ -110,6 +111,21 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: Routes.insights,
                 builder: (context, state) => const InsightsScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'category/:id',
+                    builder: (context, state) => CategoryInsightScreen(
+                      id: int.parse(state.pathParameters['id']!),
+                    ),
+                  ),
+                  GoRoute(
+                    path: 'entry/:id',
+                    builder: (context, state) => EntryDetailScreen(
+                      id: int.parse(state.pathParameters['id']!),
+                      backLabel: AppLocalizations.of(context).tabInsights,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
