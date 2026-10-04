@@ -263,7 +263,6 @@ class _CurrencyPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = context.colors;
     final l10n = AppLocalizations.of(context);
 
     return Column(
@@ -278,69 +277,91 @@ class _CurrencyPicker extends StatelessWidget {
             itemCount: Currency.supported.length,
             itemBuilder: (context, i) {
               final currency = Currency.supported[i];
-              final isSelected = currency == selected;
-              return InkWell(
-                onTap: () {
-                  HapticFeedback.selectionClick();
-                  Navigator.of(context).pop(currency);
-                },
-                highlightColor: c.hairline.withValues(alpha: 0.6),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: CentSpace.lg,
-                        vertical: 10,
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 36,
-                            height: 36,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: isSelected ? c.tintCopper : c.tintNeutral,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text(
-                              currency.symbol,
-                              style: CentType.headline.copyWith(
-                                color: isSelected ? c.primaryText : c.ink,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: CentSpace.md),
-                          Expanded(
-                            child: Text(
-                              currency.name,
-                              style: CentType.body.copyWith(color: c.ink),
-                            ),
-                          ),
-                          Text(
-                            currency.code,
-                            style: CentType.subheadline.copyWith(color: c.mute),
-                          ),
-                          SizedBox(
-                            width: 32,
-                            child: isSelected
-                                ? Icon(
-                                    CentIcons.check,
-                                    size: 20,
-                                    color: c.primaryText,
-                                  )
-                                : null,
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (i < Currency.supported.length - 1) const InsetDivider(),
-                  ],
-                ),
+              return CurrencyRow(
+                currency: currency,
+                selected: currency == selected,
+                showDivider: i < Currency.supported.length - 1,
+                onTap: () => Navigator.of(context).pop(currency),
               );
             },
           ),
         ),
       ],
+    );
+  }
+}
+
+/// One currency in a pick-one list: symbol tile, name, code, checkmark.
+class CurrencyRow extends StatelessWidget {
+  const CurrencyRow({
+    super.key,
+    required this.currency,
+    required this.selected,
+    required this.onTap,
+    this.showDivider = true,
+  });
+
+  final Currency currency;
+  final bool selected;
+  final VoidCallback onTap;
+  final bool showDivider;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    return InkWell(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        onTap();
+      },
+      highlightColor: c.hairline.withValues(alpha: 0.6),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: CentSpace.lg,
+              vertical: 10,
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 36,
+                  height: 36,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: selected ? c.tintCopper : c.tintNeutral,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    currency.symbol,
+                    style: CentType.headline.copyWith(
+                      color: selected ? c.primaryText : c.ink,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: CentSpace.md),
+                Expanded(
+                  child: Text(
+                    currency.name,
+                    style: CentType.body.copyWith(color: c.ink),
+                  ),
+                ),
+                Text(
+                  currency.code,
+                  style: CentType.subheadline.copyWith(color: c.mute),
+                ),
+                SizedBox(
+                  width: 32,
+                  child: selected
+                      ? Icon(CentIcons.check, size: 20, color: c.primaryText)
+                      : null,
+                ),
+              ],
+            ),
+          ),
+          if (showDivider) const InsetDivider(),
+        ],
+      ),
     );
   }
 }

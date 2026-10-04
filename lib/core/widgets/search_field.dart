@@ -14,12 +14,14 @@ class CentSearchField extends StatelessWidget {
     required this.controller,
     required this.onChanged,
     this.focusNode,
+    this.autofocus = true,
   });
 
   final String placeholder;
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final FocusNode? focusNode;
+  final bool autofocus;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class CentSearchField extends StatelessWidget {
       focusNode: focusNode,
       // In a searchable navigation bar the resting copy of the field can't
       // take focus; the copy shown once search is active focuses itself.
-      autofocus: true,
+      autofocus: autofocus,
       onChanged: onChanged,
       placeholder: placeholder,
       backgroundColor: c.canvas,

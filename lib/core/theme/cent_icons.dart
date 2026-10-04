@@ -63,6 +63,7 @@ abstract final class CentIcons {
   static const grip = LucideIcons.gripVertical300;
   static const eyeOff = LucideIcons.eyeOff300;
   static const bank = LucideIcons.landmark300;
+  static const chart = LucideIcons.chartPie300;
   static const repeat = LucideIcons.repeat300;
   static const pause = LucideIcons.pause300;
   static const play = LucideIcons.play300;

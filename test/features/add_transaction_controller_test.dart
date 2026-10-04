@@ -1,4 +1,5 @@
 import 'package:cent/core/database/app_database.dart';
+import 'package:cent/data/demo_seeder.dart';
 import 'package:cent/data/providers.dart';
 import 'package:cent/features/add_transaction/add_transaction_controller.dart';
 import 'package:drift/drift.dart' hide isNotNull, isNull;
@@ -16,6 +17,7 @@ void main() {
   setUp(() async {
     db = AppDatabase(NativeDatabase.memory());
     container = ProviderContainer(overrides: testOverrides(db, now));
+    await DemoSeeder(db, now: now).seed();
     await container.read(appStartupProvider.future);
   });
 

@@ -3,12 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../data/providers.dart';
 import '../../features/accounts/account_detail_screen.dart';
 import '../../features/accounts/accounts_screen.dart';
 import '../../features/activity/activity_screen.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/insights/category_insight_screen.dart';
 import '../../features/insights/insights_screen.dart';
+import '../../features/onboarding/onboarding_screen.dart';
 import '../../features/plan/budget_detail_screen.dart';
 import '../../features/plan/goal_detail_screen.dart';
 import '../../features/plan/plan_screen.dart';
@@ -26,9 +28,28 @@ import '../widgets/cent_tab_bar.dart';
 import 'routes.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
+  // Onboarding gates the app: finishing it, or erasing everything, moves
+  // between the two without any screen having to navigate.
+  final onboarded = ValueNotifier(ref.read(appStartupProvider).value ?? false);
+  ref
+    ..listen(onboardingDoneProvider, (_, next) {
+      if (next.value case final done?) onboarded.value = done;
+    })
+    ..onDispose(onboarded.dispose);
+
   return GoRouter(
-    initialLocation: Routes.home,
+    initialLocation: onboarded.value ? Routes.home : Routes.onboarding,
+    refreshListenable: onboarded,
+    redirect: (context, state) {
+      final onboarding = state.matchedLocation == Routes.onboarding;
+      if (!onboarded.value) return onboarding ? null : Routes.onboarding;
+      return onboarding ? Routes.home : null;
+    },
     routes: [
+      GoRoute(
+        path: Routes.onboarding,
+        builder: (context, state) => const OnboardingScreen(),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => _TabShell(shell: shell),
         branches: [
