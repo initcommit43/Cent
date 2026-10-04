@@ -9,8 +9,9 @@ import '../theme/cent_typography.dart';
 /// Top-level screen with an iOS large title that collapses to an inline
 /// title on scroll.
 ///
-/// With [band] the title sits on the cream header band, and [lead] (usually
-/// the hero card) straddles the band's bottom edge.
+/// With [band] the title sits on the cream header band and the band extends
+/// behind [lead]. Set [leadOverlap] to let a hero card straddle the band's
+/// bottom edge instead.
 class LargeTitleScaffold extends StatelessWidget {
   const LargeTitleScaffold({
     super.key,
@@ -18,6 +19,7 @@ class LargeTitleScaffold extends StatelessWidget {
     this.actions = const [],
     this.band = false,
     this.lead,
+    this.leadOverlap,
     this.slivers = const [],
     this.searchField,
     this.onSearchActiveChanged,
@@ -27,6 +29,9 @@ class LargeTitleScaffold extends StatelessWidget {
   final List<Widget> actions;
   final bool band;
   final Widget? lead;
+
+  /// How far the band reaches into [lead]; null covers all of it.
+  final double? leadOverlap;
   final List<Widget> slivers;
 
   /// Shown under the large title, iOS style: it slides away as content
@@ -34,9 +39,6 @@ class LargeTitleScaffold extends StatelessWidget {
   /// it into the bar with a Cancel button.
   final Widget? searchField;
   final ValueChanged<bool>? onSearchActiveChanged;
-
-  /// How far the band reaches below the navigation bar.
-  static const bandOverlap = 96.0;
 
   @override
   Widget build(BuildContext context) {
@@ -82,11 +84,17 @@ class LargeTitleScaffold extends StatelessWidget {
                       top: 0,
                       left: 0,
                       right: 0,
-                      height: bandOverlap,
+                      height: leadOverlap,
+                      bottom: leadOverlap == null ? 0 : null,
                       child: ColoredBox(color: c.header),
                     ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(margin, 8, margin, 0),
+                    padding: EdgeInsets.fromLTRB(
+                      margin,
+                      8,
+                      margin,
+                      band && leadOverlap == null ? CentSpace.lg : 0,
+                    ),
                     child: lead,
                   ),
                 ],
