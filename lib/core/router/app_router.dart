@@ -7,15 +7,10 @@ import '../../features/activity/activity_screen.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/insights/insights_screen.dart';
 import '../../features/plan/plan_screen.dart';
+import '../../features/transactions/entry_detail_screen.dart';
 import '../../l10n/app_localizations.dart';
 import '../widgets/cent_tab_bar.dart';
-
-abstract final class Routes {
-  static const home = '/home';
-  static const activity = '/activity';
-  static const plan = '/plan';
-  static const insights = '/insights';
-}
+import 'routes.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -29,6 +24,15 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: Routes.home,
                 builder: (context, state) => const HomeScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'entry/:id',
+                    builder: (context, state) => EntryDetailScreen(
+                      id: int.parse(state.pathParameters['id']!),
+                      backLabel: AppLocalizations.of(context).tabHome,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
