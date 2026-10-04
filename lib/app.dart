@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/cent_theme.dart';
 import 'data/providers.dart';
+import 'features/lock/app_lock.dart';
 import 'l10n/app_localizations.dart';
 
 class CentApp extends ConsumerWidget {
@@ -20,6 +21,7 @@ class CentApp extends ConsumerWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: ref.watch(routerProvider),
+      builder: (context, child) => AppLockGate(child: child!),
     );
   }
 }
