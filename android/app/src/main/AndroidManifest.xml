@@ -2,7 +2,7 @@
     <!-- Exchange rates are fetched from Frankfurter; nothing else uses the network. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:label="cent"
+        android:label="Cent"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
