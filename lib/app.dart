@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/router/app_router.dart';
 import 'core/theme/cent_theme.dart';
+import 'data/providers.dart';
 import 'l10n/app_localizations.dart';
 
 class CentApp extends ConsumerWidget {
@@ -15,6 +16,7 @@ class CentApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: CentTheme.light(),
       darkTheme: CentTheme.dark(),
+      themeMode: ref.watch(themeModeProvider).value ?? ThemeMode.system,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: ref.watch(routerProvider),
