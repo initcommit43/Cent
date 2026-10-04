@@ -10,6 +10,7 @@ abstract final class SettingKeys {
   static const hideAmounts = 'hide_amounts';
   static const demoData = 'demo_data';
   static const ratesUpdatedAt = 'rates_updated_at';
+  static const lastBackupAt = 'last_backup_at';
 }
 
 class SettingsRepository {
