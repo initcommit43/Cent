@@ -22,27 +22,38 @@ import '../../data/providers.dart';
 import '../../l10n/app_localizations.dart';
 import '../accounts/account_style.dart';
 import '../activity/activity_providers.dart';
+import '../common/pickers.dart';
 import 'add_transaction_controller.dart';
 import 'amount_input.dart';
-import 'pickers.dart';
 
 /// Opens the add flow, or the edit flow when [editId] is given. Resolves to
 /// true when something was saved.
-Future<bool> showAddTransaction(BuildContext context, {int? editId}) async {
+Future<bool> showAddTransaction(
+  BuildContext context, {
+  int? editId,
+  TransactionKind kind = TransactionKind.expense,
+  int? accountId,
+}) async {
   final saved = await showCentSheet<bool>(
     context,
     builder: (_) => FractionallySizedBox(
       heightFactor: 0.94,
-      child: _AddTransactionSheet(editId: editId),
+      child: _AddTransactionSheet(
+        editId: editId,
+        kind: kind,
+        accountId: accountId,
+      ),
     ),
   );
   return saved ?? false;
 }
 
 class _AddTransactionSheet extends ConsumerStatefulWidget {
-  const _AddTransactionSheet({this.editId});
+  const _AddTransactionSheet({required this.kind, this.editId, this.accountId});
 
   final int? editId;
+  final TransactionKind kind;
+  final int? accountId;
 
   @override
   ConsumerState<_AddTransactionSheet> createState() =>
@@ -65,7 +76,10 @@ class _AddTransactionSheetState extends ConsumerState<_AddTransactionSheet> {
 
   Future<void> _start() async {
     if (widget.editId == null) {
-      await _controller.startNew();
+      await _controller.startNew(
+        kind: widget.kind,
+        accountId: widget.accountId,
+      );
     } else {
       await _controller.startEdit(widget.editId!);
       final draft = ref.read(addTransactionControllerProvider)!;
