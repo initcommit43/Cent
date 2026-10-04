@@ -50,6 +50,10 @@ void main() {
       );
     });
 
+    test('rounds to whole units on request', () {
+      expect(formatMoney(const Money(9650, Currency.eur), whole: true), '€97');
+    });
+
     test('respects currencies without minor units', () {
       expect(formatMoney(const Money(1500, Currency.jpy)), '¥1,500');
     });

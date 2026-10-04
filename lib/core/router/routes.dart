@@ -13,4 +13,6 @@ abstract final class Routes {
   static String goal(int id) => '/plan/goal/$id';
   static String recurring(int id) => '/plan/recurring/$id';
   static String planEntry(int id) => '/plan/entry/$id';
+  static String insightsCategory(int id) => '/insights/category/$id';
+  static String insightsEntry(int id) => '/insights/entry/$id';
 }
