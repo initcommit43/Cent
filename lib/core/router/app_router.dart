@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../features/accounts/account_detail_screen.dart';
+import '../../features/accounts/accounts_screen.dart';
 import '../../features/activity/activity_screen.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/insights/insights_screen.dart';
@@ -31,6 +33,18 @@ final routerProvider = Provider<GoRouter>((ref) {
                       id: int.parse(state.pathParameters['id']!),
                       backLabel: AppLocalizations.of(context).tabHome,
                     ),
+                  ),
+                  GoRoute(
+                    path: 'accounts',
+                    builder: (context, state) => const AccountsScreen(),
+                    routes: [
+                      GoRoute(
+                        path: ':id',
+                        builder: (context, state) => AccountDetailScreen(
+                          id: int.parse(state.pathParameters['id']!),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

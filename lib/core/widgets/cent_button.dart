@@ -6,7 +6,14 @@ import '../theme/cent_tokens.dart';
 import '../theme/cent_typography.dart';
 import 'pressable.dart';
 
-enum CentButtonStyle { primary, secondary, compact, onDark, destructive }
+enum CentButtonStyle {
+  primary,
+  secondary,
+  compact,
+  compactSecondary,
+  onDark,
+  destructive,
+}
 
 /// Pill button. Use one [CentButtonStyle.primary] per screen at most.
 class CentButton extends StatelessWidget {
@@ -28,12 +35,18 @@ class CentButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final compact = style == CentButtonStyle.compact;
+    final compact =
+        style == CentButtonStyle.compact ||
+        style == CentButtonStyle.compactSecondary;
 
     final (Color background, Color foreground, Color? border) = switch (style) {
       CentButtonStyle.primary ||
       CentButtonStyle.compact => (c.primary, c.onPrimary, null),
-      CentButtonStyle.secondary => (c.canvas, c.primaryText, c.primaryText),
+      CentButtonStyle.secondary || CentButtonStyle.compactSecondary => (
+        c.canvas,
+        c.primaryText,
+        c.primaryText,
+      ),
       CentButtonStyle.onDark => (c.onDarkButton, c.onDarkButtonText, null),
       CentButtonStyle.destructive => (c.canvas, c.negative, c.negative),
     };

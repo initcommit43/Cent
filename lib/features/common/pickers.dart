@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/database/app_database.dart';
+import '../../core/money/currency.dart';
 import '../../core/money/money_format.dart';
 import '../../core/theme/cent_icons.dart';
 import '../../core/theme/cent_theme.dart';
@@ -235,6 +236,104 @@ class _AccountPicker extends ConsumerWidget {
           const SizedBox(height: CentSpace.lg),
         ],
       ),
+    );
+  }
+}
+
+Future<Currency?> pickCurrency(BuildContext context, {Currency? selected}) =>
+    showCentSheet<Currency>(
+      context,
+      builder: (_) => FractionallySizedBox(
+        heightFactor: 0.8,
+        child: _CurrencyPicker(selected: selected),
+      ),
+    );
+
+class _CurrencyPicker extends StatelessWidget {
+  const _CurrencyPicker({this.selected});
+
+  final Currency? selected;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final l10n = AppLocalizations.of(context);
+
+    return Column(
+      children: [
+        SheetHeader(title: l10n.currency, cancelLabel: l10n.cancel),
+        Expanded(
+          child: ListView.builder(
+            padding: EdgeInsets.only(
+              top: CentSpace.sm,
+              bottom: MediaQuery.paddingOf(context).bottom + CentSpace.lg,
+            ),
+            itemCount: Currency.supported.length,
+            itemBuilder: (context, i) {
+              final currency = Currency.supported[i];
+              final isSelected = currency == selected;
+              return InkWell(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  Navigator.of(context).pop(currency);
+                },
+                highlightColor: c.hairline.withValues(alpha: 0.6),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: CentSpace.lg,
+                        vertical: 10,
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 36,
+                            height: 36,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: isSelected ? c.tintCopper : c.tintNeutral,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              currency.symbol,
+                              style: CentType.headline.copyWith(
+                                color: isSelected ? c.primaryText : c.ink,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: CentSpace.md),
+                          Expanded(
+                            child: Text(
+                              currency.name,
+                              style: CentType.body.copyWith(color: c.ink),
+                            ),
+                          ),
+                          Text(
+                            currency.code,
+                            style: CentType.subheadline.copyWith(color: c.mute),
+                          ),
+                          SizedBox(
+                            width: 32,
+                            child: isSelected
+                                ? Icon(
+                                    CentIcons.check,
+                                    size: 20,
+                                    color: c.primaryText,
+                                  )
+                                : null,
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (i < Currency.supported.length - 1) const InsetDivider(),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

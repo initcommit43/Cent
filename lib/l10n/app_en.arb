@@ -217,5 +217,67 @@
     }
   },
   "saveChanges": "Save changes",
-  "chooseDate": "Date"
+  "chooseDate": "Date",
+  "currency": "Currency",
+  "netWorth": "Net worth",
+  "acrossAccounts": "{count, plural, =1{Across 1 account} other{Across {count} accounts}}",
+  "@acrossAccounts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupEveryday": "Everyday",
+  "groupSavings": "Savings",
+  "groupCash": "Cash",
+  "typeChecking": "Checking",
+  "typeSavings": "Savings",
+  "typeCash": "Cash",
+  "typeCard": "Card",
+  "approxAmount": "≈ {amount}",
+  "@approxAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "transferBetweenAccounts": "Transfer between accounts",
+  "newAccount": "New account",
+  "editAccount": "Edit account",
+  "accountNameHint": "Main account, Savings, Wallet…",
+  "accountType": "Type",
+  "startingBalance": "Starting balance",
+  "startingBalanceHint": "Enter a negative amount for a card balance you owe.",
+  "includeInNetWorth": "Include in net worth",
+  "save": "Save",
+  "add": "Add",
+  "archiveAccount": "Archive account",
+  "archiveAccountConfirm": "Archive “{name}”? It disappears from lists and totals. Its history stays in Activity.",
+  "@archiveAccountConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "period30Days": "30 days",
+  "period3Months": "3 months",
+  "periodYear": "Year",
+  "balanceChartLabel": "Balance over {period}, from {start} to {end}",
+  "@balanceChartLabel": {
+    "placeholders": {
+      "period": {
+        "type": "String"
+      },
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "noAccountTransactions": "No transactions in this account yet."
 }
