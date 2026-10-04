@@ -24,7 +24,7 @@ void main() {
       const spent = Money(41260, Currency.eur);
       const budget = Money(45000, Currency.eur);
       expect(spent.ratioOf(budget), closeTo(0.9169, 0.0001));
-      expect(spent.ratioOf(Money.zero(Currency.eur)), 0);
+      expect(spent.ratioOf(const Money.zero(Currency.eur)), 0);
     });
   });
 
@@ -45,7 +45,7 @@ void main() {
 
     test('never shows a sign on zero', () {
       expect(
-        formatMoney(Money.zero(Currency.eur), sign: SignDisplay.always),
+        formatMoney(const Money.zero(Currency.eur), sign: SignDisplay.always),
         '€0.00',
       );
     });

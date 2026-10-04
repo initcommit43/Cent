@@ -7,7 +7,7 @@ import 'currency.dart';
 class Money implements Comparable<Money> {
   const Money(this.minor, this.currency);
 
-  Money.zero(this.currency) : minor = 0;
+  const Money.zero(this.currency) : minor = 0;
 
   final int minor;
   final Currency currency;
