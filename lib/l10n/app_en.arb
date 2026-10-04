@@ -5,7 +5,6 @@
   "tabActivity": "Activity",
   "tabPlan": "Plan",
   "tabInsights": "Insights",
-
   "settings": "Settings",
   "seeAll": "See all",
   "cancel": "Cancel",
@@ -14,25 +13,62 @@
   "today": "Today",
   "yesterday": "Yesterday",
   "transfer": "Transfer",
-
   "totalBalance": "Total balance",
   "netThisMonth": "{amount} this month",
-  "@netThisMonth": { "placeholders": { "amount": { "type": "String" } } },
+  "@netThisMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "accounts": "Accounts",
   "monthSpending": "{month} spending",
-  "@monthSpending": { "placeholders": { "month": { "type": "String" } } },
+  "@monthSpending": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
   "daysLeft": "{count, plural, =1{1 day left} other{{count} days left}}",
-  "@daysLeft": { "placeholders": { "count": { "type": "int" } } },
+  "@daysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "ofAmount": "of {amount}",
-  "@ofAmount": { "placeholders": { "amount": { "type": "String" } } },
+  "@ofAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "leftPerDay": "{left} left · about {perDay} a day",
-  "@leftPerDay": { "placeholders": { "left": { "type": "String" }, "perDay": { "type": "String" } } },
+  "@leftPerDay": {
+    "placeholders": {
+      "left": {
+        "type": "String"
+      },
+      "perDay": {
+        "type": "String"
+      }
+    }
+  },
   "overBudgetBy": "{amount} over budget",
-  "@overBudgetBy": { "placeholders": { "amount": { "type": "String" } } },
+  "@overBudgetBy": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "noBudgetSpent": "Spent so far this month",
   "recent": "Recent",
   "noTransactionsYet": "No transactions yet",
-
   "searchTransactions": "Search transactions",
   "filters": "Filters",
   "previousMonth": "Previous month",
@@ -42,19 +78,42 @@
   "income": "Income",
   "transfers": "Transfers",
   "spentSummary": "{amount} spent",
-  "@spentSummary": { "placeholders": { "amount": { "type": "String" } } },
+  "@spentSummary": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "noTransactionsIn": "Nothing in {month}",
-  "@noTransactionsIn": { "placeholders": { "month": { "type": "String" } } },
+  "@noTransactionsIn": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
   "noTransactionsInBody": "Transactions you add for this month show up here.",
   "noMatchesFor": "No matches for “{query}”",
-  "@noMatchesFor": { "placeholders": { "query": { "type": "String" } } },
+  "@noMatchesFor": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
   "noMatches": "No matches",
   "noMatchesBody": "Try another word, or clear the filters.",
   "clearFilters": "Clear filters",
   "searchTip": "Search matches names, notes and categories.",
   "resultsCount": "{count, plural, =1{1 result} other{{count} results}}",
-  "@resultsCount": { "placeholders": { "count": { "type": "int" } } },
-
+  "@resultsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "filterType": "Type",
   "filterAccounts": "Accounts",
   "filterCategories": "Categories",
@@ -62,8 +121,13 @@
   "filterMin": "Min",
   "filterMax": "Max",
   "showResults": "{count, plural, =0{No transactions} =1{Show 1 transaction} other{Show {count} transactions}}",
-  "@showResults": { "placeholders": { "count": { "type": "int" } } },
-
+  "@showResults": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "detailCategory": "Category",
   "detailAccount": "Account",
   "detailDate": "Date",
@@ -73,7 +137,85 @@
   "repeatMonthly": "Monthly",
   "deleteTransaction": "Delete transaction",
   "deleteConfirm": "Delete “{title}, {amount}”? This can’t be undone.",
-  "@deleteConfirm": { "placeholders": { "title": { "type": "String" }, "amount": { "type": "String" } } },
+  "@deleteConfirm": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "merchantInsight": "You’ve spent {amount} at {title} this month across {count, plural, =1{1 visit} other{{count} visits}}.",
-  "@merchantInsight": { "placeholders": { "amount": { "type": "String" }, "title": { "type": "String" }, "count": { "type": "int" } } }
+  "@merchantInsight": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "title": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "addTransaction": "Add transaction",
+  "newTransaction": "New transaction",
+  "newExpense": "New expense",
+  "newIncome": "New income",
+  "newTransfer": "New transfer",
+  "editTransaction": "Edit transaction",
+  "back": "Back",
+  "done": "Done",
+  "continueAction": "Continue",
+  "expense": "Expense",
+  "deleteKey": "Delete",
+  "decimalPoint": "Decimal point",
+  "chooseAccount": "Choose account",
+  "fromAccount": "From",
+  "toAccount": "To",
+  "fromAccountNamed": "From {account}",
+  "@fromAccountNamed": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "toAccountNamed": "To {account}",
+  "@toAccountNamed": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "arrivesAs": "Arrives as {amount}",
+  "@arrivesAs": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "noRateAvailable": "No exchange rate for this pair yet",
+  "fieldName": "Name",
+  "fieldNameHint": "Where or what was it?",
+  "fieldNote": "Note",
+  "fieldNoteHint": "Add a note",
+  "category": "Category",
+  "saveExpense": "Save expense",
+  "saveIncome": "Save income",
+  "saveTransfer": "Transfer {amount}",
+  "@saveTransfer": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "saveChanges": "Save changes",
+  "chooseDate": "Date"
 }

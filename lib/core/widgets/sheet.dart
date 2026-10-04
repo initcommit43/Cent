@@ -34,12 +34,16 @@ class SheetHeader extends StatelessWidget {
     required this.cancelLabel,
     this.actionLabel,
     this.onAction,
+    this.onCancel,
   });
 
   final String title;
   final String cancelLabel;
   final String? actionLabel;
   final VoidCallback? onAction;
+
+  /// Defaults to closing the sheet.
+  final VoidCallback? onCancel;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +67,7 @@ class SheetHeader extends StatelessWidget {
           child: Row(
             children: [
               TextButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: onCancel ?? () => Navigator.of(context).pop(),
                 child: Text(cancelLabel, style: link(FontWeight.w400)),
               ),
               Expanded(

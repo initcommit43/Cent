@@ -40,6 +40,10 @@ abstract final class CentIcons {
   static const forward = LucideIcons.chevronRight300;
   static const clear = LucideIcons.x300;
   static const delete = LucideIcons.trash2300;
+  static const check = LucideIcons.check300;
+  static const backspace = LucideIcons.delete300;
+  static const chevronDown = LucideIcons.chevronDown300;
+  static const calendar = LucideIcons.calendar300;
   static const alert = LucideIcons.circleAlert300;
   static const up = LucideIcons.arrowUpRight300;
   static const down = LucideIcons.arrowDownLeft300;

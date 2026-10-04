@@ -22,6 +22,7 @@ import '../../core/widgets/list_parts.dart';
 import '../../data/providers.dart';
 import '../../data/transactions_repository.dart';
 import '../../l10n/app_localizations.dart';
+import '../add_transaction/add_transaction_sheet.dart';
 import 'entry_providers.dart';
 
 final _merchantProvider = FutureProvider.autoDispose
@@ -46,8 +47,24 @@ class EntryDetailScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final view = ref.watch(entryProvider(id)).value;
 
+    // Deleting, or editing a transfer (which replaces both halves), removes
+    // this entry; leave the screen instead of showing nothing.
+    ref.listen(entryProvider(id), (previous, next) {
+      if (previous?.value != null && next.hasValue && next.value == null) {
+        context.pop();
+      }
+    });
+
     return InlineScaffold(
       backLabel: backLabel,
+      trailing: view == null
+          ? null
+          : CupertinoButton(
+              padding: EdgeInsets.zero,
+              onPressed: () =>
+                  unawaited(showAddTransaction(context, editId: id)),
+              child: Text(l10n.edit),
+            ),
       bottom: view == null
           ? null
           : CentButton(
@@ -91,7 +108,6 @@ class EntryDetailScreen extends ConsumerWidget {
     );
     if (confirmed != true || !context.mounted) return;
     await ref.read(transactionsRepositoryProvider).delete(view.entry.id);
-    if (context.mounted) context.pop();
   }
 }
 
