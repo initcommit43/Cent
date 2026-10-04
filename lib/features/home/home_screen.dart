@@ -45,6 +45,7 @@ class HomeScreen extends ConsumerWidget {
     return LargeTitleScaffold(
       title: l10n.tabHome,
       band: true,
+      leadOverlap: 96,
       actions: [
         CentIconButton(
           icon: CentIcons.settings,
