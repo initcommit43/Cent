@@ -19,6 +19,8 @@ class LargeTitleScaffold extends StatelessWidget {
     this.band = false,
     this.lead,
     this.slivers = const [],
+    this.searchField,
+    this.onSearchActiveChanged,
   });
 
   final String title;
@@ -27,6 +29,12 @@ class LargeTitleScaffold extends StatelessWidget {
   final Widget? lead;
   final List<Widget> slivers;
 
+  /// Shown under the large title, iOS style: it slides away as content
+  /// scrolls up and returns when pulling down at the top. Tapping it moves
+  /// it into the bar with a Cancel button.
+  final Widget? searchField;
+  final ValueChanged<bool>? onSearchActiveChanged;
+
   /// How far the band reaches below the navigation bar.
   static const bandOverlap = 96.0;
 
@@ -34,22 +42,37 @@ class LargeTitleScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.colors;
     final margin = CentSpace.margin(MediaQuery.sizeOf(context).width);
+    final trailing = actions.isEmpty
+        ? null
+        : Row(mainAxisSize: MainAxisSize.min, children: actions);
+    final background = band ? c.header : c.material;
+    final border = band
+        ? null
+        : Border(bottom: BorderSide(color: c.hairline, width: 0));
 
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          CupertinoSliverNavigationBar(
-            largeTitle: Text(title),
-            automaticallyImplyLeading: false,
-            trailing: actions.isEmpty
-                ? null
-                : Row(mainAxisSize: MainAxisSize.min, children: actions),
-            backgroundColor: band ? c.header : c.material,
-            border: band
-                ? null
-                : Border(bottom: BorderSide(color: c.hairline, width: 0)),
-            stretch: true,
-          ),
+          if (searchField == null)
+            CupertinoSliverNavigationBar(
+              largeTitle: Text(title),
+              automaticallyImplyLeading: false,
+              trailing: trailing,
+              backgroundColor: background,
+              border: border,
+              stretch: true,
+            )
+          else
+            CupertinoSliverNavigationBar.search(
+              searchField: searchField!,
+              onSearchableBottomTap: onSearchActiveChanged,
+              largeTitle: Text(title),
+              automaticallyImplyLeading: false,
+              trailing: trailing,
+              backgroundColor: background,
+              border: border,
+              stretch: true,
+            ),
           if (lead != null)
             SliverToBoxAdapter(
               child: Stack(
