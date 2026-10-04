@@ -32,3 +32,6 @@ coverage/
 # OS
 .DS_Store
 Thumbs.db
+
+# Generated localizations
+lib/l10n/app_localizations*.dart
