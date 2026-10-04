@@ -21,9 +21,11 @@ Future<int?> pickCategory(
   BuildContext context, {
   required CategoryKind kind,
   int? selectedId,
+  Set<int> exclude = const {},
 }) => showCentSheet<int>(
   context,
-  builder: (_) => _CategoryPicker(kind: kind, selectedId: selectedId),
+  builder: (_) =>
+      _CategoryPicker(kind: kind, selectedId: selectedId, exclude: exclude),
 );
 
 Future<int?> pickAccount(
@@ -75,17 +77,22 @@ Future<DateTime?> pickDateTime(BuildContext context, DateTime initial) {
 }
 
 class _CategoryPicker extends ConsumerWidget {
-  const _CategoryPicker({required this.kind, this.selectedId});
+  const _CategoryPicker({
+    required this.kind,
+    this.selectedId,
+    this.exclude = const {},
+  });
 
   final CategoryKind kind;
   final int? selectedId;
+  final Set<int> exclude;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final c = context.colors;
     final l10n = AppLocalizations.of(context);
     final categories = (ref.watch(categoriesProvider).value ?? const [])
-        .where((cat) => cat.kind == kind)
+        .where((cat) => cat.kind == kind && !exclude.contains(cat.id))
         .toList();
     final margin = CentSpace.margin(MediaQuery.sizeOf(context).width);
 
