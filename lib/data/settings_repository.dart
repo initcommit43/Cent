@@ -7,9 +7,10 @@ abstract final class SettingKeys {
   static const onboardingDone = 'onboarding_done';
   static const appLock = 'app_lock';
   static const appLockAfterSeconds = 'app_lock_after_seconds';
-  static const hideAmounts = 'hide_amounts';
+  static const blurInSwitcher = 'blur_in_switcher';
   static const demoData = 'demo_data';
   static const ratesUpdatedAt = 'rates_updated_at';
+  static const lastBackupAt = 'last_backup_at';
 }
 
 class SettingsRepository {

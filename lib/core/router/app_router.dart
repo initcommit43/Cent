@@ -13,6 +13,13 @@ import '../../features/plan/budget_detail_screen.dart';
 import '../../features/plan/goal_detail_screen.dart';
 import '../../features/plan/plan_screen.dart';
 import '../../features/plan/recurring_detail_screen.dart';
+import '../../features/settings/about_screen.dart';
+import '../../features/settings/appearance_screen.dart';
+import '../../features/settings/backup_screen.dart';
+import '../../features/settings/categories_screen.dart';
+import '../../features/settings/currency_screen.dart';
+import '../../features/settings/security_screen.dart';
+import '../../features/settings/settings_screen.dart';
 import '../../features/transactions/entry_detail_screen.dart';
 import '../../l10n/app_localizations.dart';
 import '../widgets/cent_tab_bar.dart';
@@ -37,6 +44,36 @@ final routerProvider = Provider<GoRouter>((ref) {
                       id: int.parse(state.pathParameters['id']!),
                       backLabel: AppLocalizations.of(context).tabHome,
                     ),
+                  ),
+                  GoRoute(
+                    path: 'settings',
+                    builder: (context, state) => const SettingsScreen(),
+                    routes: [
+                      GoRoute(
+                        path: 'categories',
+                        builder: (context, state) => const CategoriesScreen(),
+                      ),
+                      GoRoute(
+                        path: 'currency',
+                        builder: (context, state) => const CurrencyScreen(),
+                      ),
+                      GoRoute(
+                        path: 'appearance',
+                        builder: (context, state) => const AppearanceScreen(),
+                      ),
+                      GoRoute(
+                        path: 'security',
+                        builder: (context, state) => const SecurityScreen(),
+                      ),
+                      GoRoute(
+                        path: 'backup',
+                        builder: (context, state) => const BackupScreen(),
+                      ),
+                      GoRoute(
+                        path: 'about',
+                        builder: (context, state) => const AboutScreen(),
+                      ),
+                    ],
                   ),
                   GoRoute(
                     path: 'accounts',

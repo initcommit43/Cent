@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart' show ThemeMode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/database/app_database.dart';
 import '../core/money/currency.dart';
 import 'accounts_repository.dart';
+import 'backup_service.dart';
 import 'budgets_repository.dart';
 import 'categories_repository.dart';
 import 'demo_seeder.dart';
@@ -66,6 +68,22 @@ final baseCurrencyProvider = StreamProvider<Currency>((ref) {
       .watch(settingsRepositoryProvider)
       .watch(SettingKeys.baseCurrency)
       .map((code) => code == null ? Currency.eur : Currency.of(code));
+});
+
+final backupServiceProvider = Provider<BackupService>(
+  (ref) => BackupService(ref.watch(databaseProvider)),
+);
+
+final themeModeProvider = StreamProvider<ThemeMode>((ref) {
+  return ref
+      .watch(settingsRepositoryProvider)
+      .watch(SettingKeys.themeMode)
+      .map(
+        (name) => ThemeMode.values.firstWhere(
+          (m) => m.name == name,
+          orElse: () => ThemeMode.system,
+        ),
+      );
 });
 
 final converterProvider = StreamProvider<CurrencyConverter>((ref) async* {

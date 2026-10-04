@@ -10,6 +10,7 @@ environment:
 dependencies:
   drift: ^2.35.1
   drift_flutter: ^0.3.1
+  file_picker: ^13.1.0
   flutter:
     sdk: flutter
   flutter_localizations:
@@ -18,7 +19,11 @@ dependencies:
   go_router: ^18.0.2
   http: ^1.6.0
   intl: ^0.20.3
+  local_auth: ^3.0.2
   lucide_icons_flutter: ^3.1.21
+  package_info_plus: ^10.2.2
+  path_provider: ^2.1.6
+  share_plus: ^13.3.1
 
 dev_dependencies:
   flutter_test:
@@ -36,6 +41,24 @@ flutter:
       fonts:
         - asset: assets/fonts/HankenGrotesk-Light.ttf
           weight: 300
+        - asset: assets/fonts/HankenGrotesk-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/HankenGrotesk-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/HankenGrotesk-SemiBold.ttf
+          weight: 600
+    # Cupertino dialogs and action sheets hardcode these families; mapping
+    # them keeps system sheets in the app's typeface.
+    - family: CupertinoSystemText
+      fonts:
+        - asset: assets/fonts/HankenGrotesk-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/HankenGrotesk-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/HankenGrotesk-SemiBold.ttf
+          weight: 600
+    - family: CupertinoSystemDisplay
+      fonts:
         - asset: assets/fonts/HankenGrotesk-Regular.ttf
           weight: 400
         - asset: assets/fonts/HankenGrotesk-Medium.ttf
