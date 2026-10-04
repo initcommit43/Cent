@@ -31,13 +31,21 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('home shows the balance and recent transactions', (
-    tester,
-  ) async {
+  testWidgets('home shows the balance and recent transactions', (tester) async {
     await pumpApp(tester);
 
     expect(find.text('Total balance'), findsOneWidget);
     expect(find.text('RECENT'), findsOneWidget);
     expect(find.text('Main account'), findsWidgets);
+  });
+
+  testWidgets('activity groups the month by day', (tester) async {
+    await pumpApp(tester);
+
+    await tester.tap(find.text('Activity').last);
+    await tester.pumpAndSettle();
+
+    expect(find.text('October 2026'), findsOneWidget);
+    expect(find.text('TODAY'), findsOneWidget);
   });
 }
