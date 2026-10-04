@@ -576,6 +576,22 @@ class _DetailsStep extends ConsumerWidget {
                             if (id != null) controller.setToAccount(id);
                           },
                         ),
+                      if (!draft.isTransfer && draft.editingId == null)
+                        _NavRow(
+                          label: l10n.detailRepeat,
+                          value: switch (draft.repeat) {
+                            null => l10n.repeatNever,
+                            Frequency.weekly => l10n.repeatWeekly,
+                            Frequency.monthly => l10n.repeatMonthly,
+                            Frequency.yearly => l10n.repeatYearly,
+                          },
+                          onTap: () async {
+                            final picked = await _pickRepeat(context);
+                            if (picked != null) {
+                              controller.setRepeat(picked.frequency);
+                            }
+                          },
+                        ),
                       _NavRow(
                         label: l10n.detailDate,
                         value:
@@ -719,4 +735,39 @@ class _NavRow extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Wraps the choice so "Never" (null) is distinguishable from dismissing.
+class _RepeatChoice {
+  const _RepeatChoice(this.frequency);
+
+  final Frequency? frequency;
+}
+
+Future<_RepeatChoice?> _pickRepeat(BuildContext context) {
+  final l10n = AppLocalizations.of(context);
+  return showCupertinoModalPopup<_RepeatChoice>(
+    context: context,
+    builder: (sheetContext) => CupertinoActionSheet(
+      title: Text(l10n.detailRepeat),
+      actions: [
+        for (final (frequency, label) in [
+          (null, l10n.repeatNever),
+          (Frequency.weekly, l10n.repeatWeekly),
+          (Frequency.monthly, l10n.repeatMonthly),
+          (Frequency.yearly, l10n.repeatYearly),
+        ])
+          CupertinoActionSheetAction(
+            onPressed: () =>
+                Navigator.of(sheetContext).pop(_RepeatChoice(frequency)),
+            child: Text(label),
+          ),
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        isDefaultAction: true,
+        onPressed: () => Navigator.of(sheetContext).pop(),
+        child: Text(l10n.cancel),
+      ),
+    ),
+  );
 }

@@ -131,6 +131,24 @@ void main() {
     expect(incoming.amountMinor, 29060);
   });
 
+  test('a repeating expense creates a recurring rule', () async {
+    final c = controller();
+    await c.startNew();
+    typeAmount(c, '29.9');
+    c.setTitle('Gym');
+    c.setRepeat(Frequency.monthly);
+    await c.save();
+
+    final saved = await latest();
+    expect(saved.recurringRuleId, isNotNull);
+    final rule = await (db.select(
+      db.recurringRules,
+    )..where((r) => r.id.equals(saved.recurringRuleId!))).getSingle();
+    expect(rule.title, 'Gym');
+    expect(rule.amountMinor, 2990);
+    expect(rule.nextDue, DateTime(2026, 11, 4, 19, 30));
+  });
+
   test('a transfer to the same account cannot continue', () async {
     final c = controller();
     await c.startNew(kind: TransactionKind.transfer);

@@ -279,5 +279,276 @@
       }
     }
   },
-  "noAccountTransactions": "No transactions in this account yet."
+  "noAccountTransactions": "No transactions in this account yet.",
+  "budgets": "Budgets",
+  "goals": "Goals",
+  "recurring": "Recurring",
+  "leftOfTotal": "left of {amount}",
+  "@leftOfTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "amountLeft": "{amount} left",
+  "@amountLeft": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "amountOver": "{amount} over",
+  "@amountOver": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "spentOf": "{spent} of {budget}",
+  "@spentOf": {
+    "placeholders": {
+      "spent": {
+        "type": "String"
+      },
+      "budget": {
+        "type": "String"
+      }
+    }
+  },
+  "budgetSummaryFooter": "{days} · about {perDay} a day",
+  "@budgetSummaryFooter": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      },
+      "perDay": {
+        "type": "String"
+      }
+    }
+  },
+  "budgetCount": "{count, plural, =1{1 budget} other{{count} budgets}}",
+  "@budgetCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "resetsOn": "of {amount} · resets {date}",
+  "@resetsOn": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "spendingPace": "Spending pace",
+  "aheadOfPace": "Ahead of plan",
+  "onPace": "On track",
+  "paceSpent": "Spent",
+  "paceEven": "Even pace",
+  "paceSummary": "You’ve used {percent}% of this budget. {days}.",
+  "@paceSummary": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      },
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "inThisBudget": "In this budget",
+  "newBudget": "New budget",
+  "editBudget": "Edit budget",
+  "deleteBudget": "Delete budget",
+  "budgetAverageHint": "You spent about {amount} a month here over the last 3 months.",
+  "@budgetAverageHint": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "period": "Period",
+  "periodWeekly": "Weekly",
+  "periodMonthly": "Monthly",
+  "periodYearly": "Yearly",
+  "amount": "Amount",
+  "noBudgetsTitle": "Give every euro a job",
+  "noBudgetsBody": "Set a budget for the categories you care about. Cent shows what’s left each day.",
+  "createBudget": "Create a budget",
+  "allBudgetsSet": "Every expense category has a budget.",
+  "savedOfTarget": "{saved} of {target}",
+  "@savedOfTarget": {
+    "placeholders": {
+      "saved": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "goalMonthlyByDate": "{amount} a month reaches it by {date}",
+  "@goalMonthlyByDate": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "goalNoDeadline": "No deadline",
+  "goalReached": "Goal reached",
+  "completedGoals": "Completed",
+  "percentSaved": "{percent}% saved · {remaining} to go",
+  "@percentSaved": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      },
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "contributions": "Contributions",
+  "addMoney": "Add money",
+  "addMoneyTo": "Add to {goal}",
+  "@addMoneyTo": {
+    "placeholders": {
+      "goal": {
+        "type": "String"
+      }
+    }
+  },
+  "addAmount": "Add {amount}",
+  "@addAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "afterThisYouHave": "After this you’ll have {saved} of {target}.",
+  "@afterThisYouHave": {
+    "placeholders": {
+      "saved": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "startingAmount": "Starting amount",
+  "newGoal": "New goal",
+  "editGoal": "Edit goal",
+  "deleteGoal": "Delete goal",
+  "deleteGoalConfirm": "Delete “{name}” and its contributions?",
+  "@deleteGoalConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "target": "Target",
+  "targetDate": "Target date",
+  "noTargetDate": "None",
+  "clearDate": "Clear",
+  "icon": "Icon",
+  "color": "Color",
+  "goalNameHint": "Japan trip, new laptop, a safety net…",
+  "noGoalsTitle": "Save for something",
+  "noGoalsBody": "A trip, a laptop, a safety net. Set a target and Cent works out the monthly amount.",
+  "createGoal": "Create a goal",
+  "fixedCostsMonthly": "{amount} a month in fixed costs",
+  "@fixedCostsMonthly": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "recurringCount": "{count, plural, =1{1 recurring payment} other{{count} recurring payments}}",
+  "@recurringCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dueThisWeek": "This week",
+  "dueLaterThisMonth": "Later this month",
+  "dueLater": "Later",
+  "paused": "Paused",
+  "everyWeek": "Weekly",
+  "everyMonth": "Monthly",
+  "everyYear": "Yearly",
+  "everyMonthOnDay": "Every month on the {day}",
+  "@everyMonthOnDay": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "everyWeekOnDay": "Every week on {weekday}",
+  "@everyWeekOnDay": {
+    "placeholders": {
+      "weekday": {
+        "type": "String"
+      }
+    }
+  },
+  "everyYearOnDate": "Every year on {date}",
+  "@everyYearOnDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "nextPayment": "Next payment",
+  "repeats": "Repeats",
+  "yearlyCostPaid": "{yearly} a year. You’ve paid {paid} since {since}.",
+  "@yearlyCostPaid": {
+    "placeholders": {
+      "yearly": {
+        "type": "String"
+      },
+      "paid": {
+        "type": "String"
+      },
+      "since": {
+        "type": "String"
+      }
+    }
+  },
+  "history": "History",
+  "pause": "Pause",
+  "resume": "Resume",
+  "delete": "Delete",
+  "deleteRecurringConfirm": "Stop repeating “{title}”? Payments already recorded stay in Activity.",
+  "@deleteRecurringConfirm": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "noRecurringTitle": "No recurring payments yet",
+  "noRecurringBody": "Mark rent, subscriptions or your salary as repeating when you add them, and they show up here before they’re due.",
+  "repeatWeekly": "Weekly",
+  "repeatYearly": "Yearly"
 }

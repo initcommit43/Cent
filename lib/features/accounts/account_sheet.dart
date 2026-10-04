@@ -12,6 +12,7 @@ import '../../core/theme/cent_icons.dart';
 import '../../core/theme/cent_theme.dart';
 import '../../core/theme/cent_tokens.dart';
 import '../../core/theme/cent_typography.dart';
+import '../../core/widgets/amount_field.dart';
 import '../../core/widgets/cent_button.dart';
 import '../../core/widgets/cent_card.dart';
 import '../../core/widgets/cent_chip.dart';
@@ -47,7 +48,10 @@ class _AccountSheetState extends ConsumerState<_AccountSheet> {
   late final _balance = TextEditingController(
     text: widget.account == null
         ? ''
-        : _formatMinor(widget.account!.openingBalanceMinor),
+        : formatAmountInput(
+            widget.account!.openingBalanceMinor,
+            Currency.of(widget.account!.currency),
+          ),
   );
   late AccountType _type = widget.account?.type ?? AccountType.checking;
   late Currency _currency = widget.account == null
@@ -64,25 +68,8 @@ class _AccountSheetState extends ConsumerState<_AccountSheet> {
     super.dispose();
   }
 
-  static String _formatMinor(int minor) {
-    final sign = minor < 0 ? '-' : '';
-    final abs = minor.abs();
-    final cents = abs % 100;
-    return '$sign${abs ~/ 100}${cents == 0 ? '' : '.${cents.toString().padLeft(2, '0')}'}';
-  }
-
-  /// Parses "1200", "-312.4" or "1,200.50" into minor units.
-  int? get _openingMinor {
-    final text = _balance.text.replaceAll(',', '').trim();
-    if (text.isEmpty) return 0;
-    final match = RegExp(r'^(-)?(\d+)(?:\.(\d{1,2}))?$').firstMatch(text);
-    if (match == null) return null;
-    final whole = int.parse(match.group(2)!);
-    final minor = _currency.decimals == 0
-        ? whole
-        : whole * 100 + int.parse((match.group(3) ?? '').padRight(2, '0'));
-    return match.group(1) == null ? minor : -minor;
-  }
+  int? get _openingMinor =>
+      parseAmountMinor(_balance.text, _currency, allowNegative: true);
 
   bool get _canSave => _name.text.trim().isNotEmpty && _openingMinor != null;
 
@@ -213,49 +200,11 @@ class _AccountSheetState extends ConsumerState<_AccountSheet> {
                 ),
               ),
               label(l10n.startingBalance),
-              TextField(
+              AmountField(
                 controller: _balance,
-                keyboardType: const TextInputType.numberWithOptions(
-                  signed: true,
-                  decimal: true,
-                ),
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[-0-9.,]')),
-                ],
+                currency: _currency,
+                allowNegative: true,
                 onChanged: (_) => setState(() {}),
-                cursorColor: c.primary,
-                style: CentType.title1.copyWith(
-                  color: c.ink,
-                  fontFeatures: const [FontFeature.tabularFigures()],
-                ),
-                decoration: InputDecoration(
-                  hintText: '0',
-                  hintStyle: CentType.title1.copyWith(color: c.placeholder),
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 8),
-                    child: Text(
-                      _currency.symbol,
-                      style: CentType.title2.copyWith(color: c.mute),
-                    ),
-                  ),
-                  prefixIconConstraints: const BoxConstraints(),
-                  filled: true,
-                  fillColor: c.canvas,
-                  contentPadding: const EdgeInsets.symmetric(vertical: 14),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(CentRadius.lg),
-                    borderSide: BorderSide(
-                      color: _openingMinor == null ? c.negative : c.input,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(CentRadius.lg),
-                    borderSide: BorderSide(
-                      color: _openingMinor == null ? c.negative : c.primary,
-                      width: 1.5,
-                    ),
-                  ),
-                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 6),

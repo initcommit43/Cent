@@ -8,7 +8,10 @@ import '../../features/accounts/accounts_screen.dart';
 import '../../features/activity/activity_screen.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/insights/insights_screen.dart';
+import '../../features/plan/budget_detail_screen.dart';
+import '../../features/plan/goal_detail_screen.dart';
 import '../../features/plan/plan_screen.dart';
+import '../../features/plan/recurring_detail_screen.dart';
 import '../../features/transactions/entry_detail_screen.dart';
 import '../../l10n/app_localizations.dart';
 import '../widgets/cent_tab_bar.dart';
@@ -72,6 +75,33 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: Routes.plan,
                 builder: (context, state) => const PlanScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'budget/:id',
+                    builder: (context, state) => BudgetDetailScreen(
+                      id: int.parse(state.pathParameters['id']!),
+                    ),
+                  ),
+                  GoRoute(
+                    path: 'goal/:id',
+                    builder: (context, state) => GoalDetailScreen(
+                      id: int.parse(state.pathParameters['id']!),
+                    ),
+                  ),
+                  GoRoute(
+                    path: 'recurring/:id',
+                    builder: (context, state) => RecurringDetailScreen(
+                      id: int.parse(state.pathParameters['id']!),
+                    ),
+                  ),
+                  GoRoute(
+                    path: 'entry/:id',
+                    builder: (context, state) => EntryDetailScreen(
+                      id: int.parse(state.pathParameters['id']!),
+                      backLabel: AppLocalizations.of(context).tabPlan,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

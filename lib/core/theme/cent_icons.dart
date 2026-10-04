@@ -27,6 +27,11 @@ abstract final class CentIcons {
     'shield': LucideIcons.shield300,
     'monitor': LucideIcons.monitor300,
     'receipt': LucideIcons.receipt300,
+    'graduation': LucideIcons.graduationCap300,
+    'car': LucideIcons.car300,
+    'baby': LucideIcons.baby300,
+    'heart': LucideIcons.heart300,
+    'music': LucideIcons.music300,
   };
 
   static IconData named(String name) => _byName[name] ?? LucideIcons.receipt300;
@@ -44,6 +49,10 @@ abstract final class CentIcons {
   static const backspace = LucideIcons.delete300;
   static const chevronDown = LucideIcons.chevronDown300;
   static const calendar = LucideIcons.calendar300;
+  static const target = LucideIcons.target300;
+  static const repeat = LucideIcons.repeat300;
+  static const pause = LucideIcons.pause300;
+  static const play = LucideIcons.play300;
   static const alert = LucideIcons.circleAlert300;
   static const up = LucideIcons.arrowUpRight300;
   static const down = LucideIcons.arrowDownLeft300;

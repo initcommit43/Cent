@@ -9,4 +9,8 @@ abstract final class Routes {
   static String homeEntry(int id) => '/home/entry/$id';
   static String account(int id) => '/home/accounts/$id';
   static String activityEntry(int id) => '/activity/entry/$id';
+  static String budget(int id) => '/plan/budget/$id';
+  static String goal(int id) => '/plan/goal/$id';
+  static String recurring(int id) => '/plan/recurring/$id';
+  static String planEntry(int id) => '/plan/entry/$id';
 }

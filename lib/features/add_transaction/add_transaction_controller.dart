@@ -19,6 +19,7 @@ class TransactionDraft {
     this.categoryId,
     this.title = '',
     this.note = '',
+    this.repeat,
   });
 
   /// Set when editing an existing entry (the sending half for transfers).
@@ -32,6 +33,9 @@ class TransactionDraft {
   final String note;
   final DateTime occurredAt;
 
+  /// Turns the new entry into a recurring payment. Not offered for edits.
+  final Frequency? repeat;
+
   bool get isTransfer => kind == TransactionKind.transfer;
 
   TransactionDraft copyWith({
@@ -44,6 +48,8 @@ class TransactionDraft {
     String? title,
     String? note,
     DateTime? occurredAt,
+    Frequency? repeat,
+    bool clearRepeat = false,
   }) => TransactionDraft(
     editingId: editingId,
     kind: kind ?? this.kind,
@@ -54,6 +60,7 @@ class TransactionDraft {
     title: title ?? this.title,
     note: note ?? this.note,
     occurredAt: occurredAt ?? this.occurredAt,
+    repeat: clearRepeat ? null : repeat ?? this.repeat,
   );
 }
 
@@ -194,6 +201,9 @@ class AddTransactionController extends Notifier<TransactionDraft?> {
 
   void setDate(DateTime at) => state = state!.copyWith(occurredAt: at);
 
+  void setRepeat(Frequency? repeat) =>
+      state = state!.copyWith(repeat: repeat, clearRepeat: repeat == null);
+
   Future<void> save() async {
     final draft = state!;
     final repo = ref.read(transactionsRepositoryProvider);
@@ -229,7 +239,7 @@ class AddTransactionController extends Notifier<TransactionDraft?> {
         note: note,
       );
     } else {
-      await repo.add(
+      final id = await repo.add(
         kind: draft.kind,
         accountId: draft.accountId,
         categoryId: draft.categoryId,
@@ -238,6 +248,11 @@ class AddTransactionController extends Notifier<TransactionDraft?> {
         occurredAt: draft.occurredAt,
         note: note,
       );
+      if (draft.repeat != null) {
+        await ref
+            .read(recurringRepositoryProvider)
+            .createFromEntry(entryId: id, frequency: draft.repeat!);
+      }
     }
   }
 
