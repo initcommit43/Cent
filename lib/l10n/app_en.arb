@@ -550,5 +550,103 @@
   "noRecurringTitle": "No recurring payments yet",
   "noRecurringBody": "Mark rent, subscriptions or your salary as repeating when you add them, and they show up here before they’re due.",
   "repeatWeekly": "Weekly",
-  "repeatYearly": "Yearly"
+  "repeatYearly": "Yearly",
+  "periodWeek": "Week",
+  "periodMonth": "Month",
+  "spendingByCategory": "Spending by category",
+  "inPeriodSoFar": "in {period} so far",
+  "@inPeriodSoFar": {
+    "placeholders": {
+      "period": {
+        "type": "String"
+      }
+    }
+  },
+  "thisWeek": "this week",
+  "otherCategories": "Other",
+  "incomeAndSpending": "Income and spending",
+  "trendSummaryKept": "You kept {amount} of your income over these six months.",
+  "@trendSummaryKept": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "trendSummaryOverspent": "You spent {amount} more than you earned over these six months.",
+  "@trendSummaryOverspent": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "insightLess": "You spent {percent}% less on {category} than {previous}.",
+  "@insightLess": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      },
+      "category": {
+        "type": "String"
+      },
+      "previous": {
+        "type": "String"
+      }
+    }
+  },
+  "insightMore": "You spent {percent}% more on {category} than {previous}.",
+  "@insightMore": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      },
+      "category": {
+        "type": "String"
+      },
+      "previous": {
+        "type": "String"
+      }
+    }
+  },
+  "previousWeek": "last week",
+  "previousYear": "last year",
+  "inMonth": "in {month}",
+  "@inMonth": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
+  "biggestExpenses": "Biggest expenses",
+  "noSpendingTitle": "Nothing spent yet",
+  "noSpendingBody": "Insights fill in as you add expenses.",
+  "shareOfSpending": "{percent}% of spending · {count, plural, =1{1 transaction} other{{count} transactions}}",
+  "@shareOfSpending": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "monthlyBudget": "Monthly budget",
+  "byWeek": "By week",
+  "chartCategorySummary": "{category} spending per week for the last five weeks, latest {amount}.",
+  "@chartCategorySummary": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "chartTrendSummary": "Income and spending for the last six months.",
+  "incomeLabel": "Income",
+  "spendingLabel": "Spending"
 }
