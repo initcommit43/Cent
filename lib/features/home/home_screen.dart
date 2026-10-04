@@ -16,6 +16,7 @@ import '../../core/widgets/cent_button.dart';
 import '../../core/widgets/cent_card.dart';
 import '../../core/widgets/large_title_scaffold.dart';
 import '../../core/widgets/list_parts.dart';
+import '../../core/widgets/pressable.dart';
 import '../../data/accounts_repository.dart';
 import '../../data/providers.dart';
 import '../../l10n/app_localizations.dart';
@@ -192,7 +193,11 @@ class _AccountsStrip extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: margin),
-          child: SectionHeader(title: l10n.accounts),
+          child: SectionHeader(
+            title: l10n.accounts,
+            trailing: l10n.seeAll,
+            onTrailingTap: () => context.push(Routes.accounts),
+          ),
         ),
         SizedBox(
           height: 108,
@@ -204,36 +209,42 @@ class _AccountsStrip extends StatelessWidget {
             separatorBuilder: (_, _) => const SizedBox(width: 10),
             itemBuilder: (context, i) {
               final a = accounts[i];
-              return SizedBox(
-                width: 152,
-                child: CentCard(
-                  padding: const EdgeInsets.all(14),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CategoryTile(
-                        icon: accountIcon(a.account.type),
-                        tint: accountTint(a.account.type),
-                        size: 32,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            a.account.name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: CentType.footnote.copyWith(color: c.mute),
-                          ),
-                          Text(
-                            formatMoney(a.balance),
-                            maxLines: 1,
-                            style: CentType.bodyTabular.copyWith(color: c.ink),
-                          ),
-                        ],
-                      ),
-                    ],
+              return Pressable(
+                semanticLabel: '${a.account.name}, ${formatMoney(a.balance)}',
+                onTap: () => context.push(Routes.account(a.account.id)),
+                child: SizedBox(
+                  width: 152,
+                  child: CentCard(
+                    padding: const EdgeInsets.all(14),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CategoryTile(
+                          icon: accountIcon(a.account.type),
+                          tint: accountTint(a.account.type),
+                          size: 32,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              a.account.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: CentType.footnote.copyWith(color: c.mute),
+                            ),
+                            Text(
+                              formatMoney(a.balance),
+                              maxLines: 1,
+                              style: CentType.bodyTabular.copyWith(
+                                color: c.ink,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

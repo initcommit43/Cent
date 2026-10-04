@@ -73,9 +73,10 @@ class AddTransactionController extends Notifier<TransactionDraft?> {
 
   Future<void> startNew({
     TransactionKind kind = TransactionKind.expense,
+    int? accountId,
   }) async {
     await _load();
-    final first = _accounts.values.first;
+    final first = _accounts[accountId] ?? _accounts.values.first;
     state = TransactionDraft(
       kind: kind,
       amount: const AmountInput(),

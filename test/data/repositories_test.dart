@@ -62,6 +62,30 @@ void main() {
     expect(balance, const Money(380320, Currency.eur));
   });
 
+  test('daily balances walk back from today', () async {
+    final main = await accounts.create(
+      name: 'Main',
+      type: AccountType.checking,
+      openingBalance: const Money(10000, Currency.eur),
+    );
+    final cat = await groceries();
+    Future<void> spend(int minor, DateTime at) => transactions.add(
+      kind: TransactionKind.expense,
+      accountId: main,
+      categoryId: cat,
+      amount: Money(minor, Currency.eur),
+      title: 'Shop',
+      occurredAt: at,
+    );
+    await spend(1000, DateTime(2026, 10, 2, 12));
+    await spend(500, DateTime(2026, 10, 4, 9));
+
+    final balances = await accounts
+        .watchDailyBalances(main, DateTime(2026, 10), DateTime(2026, 10, 4))
+        .first;
+    expect(balances, [10000, 9000, 9000, 8500]);
+  });
+
   test('a transfer moves money and deletes as a pair', () async {
     final main = await accounts.create(
       name: 'Main',

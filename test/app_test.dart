@@ -6,24 +6,24 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'helpers.dart';
+
 void main() {
   late ProviderContainer container;
+  late AppDatabase db;
 
   setUp(() async {
+    db = AppDatabase(NativeDatabase.memory());
     container = ProviderContainer(
-      overrides: [
-        databaseProvider.overrideWith((ref) {
-          final db = AppDatabase(NativeDatabase.memory());
-          ref.onDispose(db.close);
-          return db;
-        }),
-        clockProvider.overrideWithValue(() => DateTime(2026, 10, 4, 19, 30)),
-      ],
+      overrides: testOverrides(db, DateTime(2026, 10, 4, 19, 30)),
     );
     await container.read(appStartupProvider.future);
   });
 
-  tearDown(() => container.dispose());
+  tearDown(() async {
+    container.dispose();
+    await db.close();
+  });
 
   Future<void> pumpApp(WidgetTester tester) async {
     await tester.pumpWidget(

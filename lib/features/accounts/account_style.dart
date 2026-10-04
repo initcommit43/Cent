@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import '../../core/database/app_database.dart';
 import '../../core/theme/cent_icons.dart';
+import '../../l10n/app_localizations.dart';
 
 IconData accountIcon(AccountType type) => switch (type) {
   AccountType.checking => CentIcons.checking,
@@ -16,3 +17,11 @@ CentTint accountTint(AccountType type) => switch (type) {
   AccountType.cash => CentTint.brass,
   AccountType.card => CentTint.blush,
 };
+
+String accountTypeLabel(AppLocalizations l10n, AccountType type) =>
+    switch (type) {
+      AccountType.checking => l10n.typeChecking,
+      AccountType.savings => l10n.typeSavings,
+      AccountType.cash => l10n.typeCash,
+      AccountType.card => l10n.typeCard,
+    };

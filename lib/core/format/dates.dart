@@ -36,3 +36,7 @@ String fullDate(BuildContext context, DateTime at) => DateFormat(
   'EEE, MMM d, y · HH:mm',
   Localizations.localeOf(context).toString(),
 ).format(at);
+
+/// "Oct 4", for chart axes.
+String shortDate(BuildContext context, DateTime d) =>
+    DateFormat.MMMd(Localizations.localeOf(context).toString()).format(d);
