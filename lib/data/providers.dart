@@ -9,8 +9,8 @@ import 'accounts_repository.dart';
 import 'backup_service.dart';
 import 'budgets_repository.dart';
 import 'categories_repository.dart';
-import 'demo_seeder.dart';
 import 'goals_repository.dart';
+import 'onboarding_service.dart';
 import 'rates_repository.dart';
 import 'rates_service.dart';
 import 'recurring_repository.dart';
@@ -100,26 +100,30 @@ final ratesServiceProvider = Provider(
 );
 
 /// Prepares the database before the first frame.
-final appStartupProvider = FutureProvider<void>((ref) async {
-  final db = ref.watch(databaseProvider);
-  final hasAccounts = await db
-      .select(db.accounts)
-      .get()
-      .then((rows) => rows.isNotEmpty);
-  // Onboarding (where users choose demo data or a fresh start) is not built
-  // yet, so a first launch gets the demo data directly.
-  if (!hasAccounts) {
-    await DemoSeeder(db, now: ref.read(clockProvider)()).seed();
-  }
+final onboardingServiceProvider = Provider<OnboardingService>(
+  (ref) => OnboardingService(ref.watch(databaseProvider)),
+);
+
+final onboardingDoneProvider = StreamProvider<bool>(
+  (ref) => ref
+      .watch(settingsRepositoryProvider)
+      .watch(SettingKeys.onboardingDone)
+      .map((v) => v == 'true'),
+);
+
+/// Runs before the first frame and resolves to whether onboarding is done,
+/// so the router can pick the first screen without a flash.
+final appStartupProvider = FutureProvider<bool>((ref) async {
+  final settings = ref.read(settingsRepositoryProvider);
+  if (!await settings.readBool(SettingKeys.onboardingDone)) return false;
   await ref
       .read(recurringRepositoryProvider)
       .materializeDue(ref.read(clockProvider)());
   // Runs in the background so a slow network never delays the first frame.
   // Read the setting directly: Riverpod pauses providers that nothing
   // listens to yet, so awaiting baseCurrencyProvider here would never finish.
-  final code = await ref
-      .read(settingsRepositoryProvider)
-      .read(SettingKeys.baseCurrency);
+  final code = await settings.read(SettingKeys.baseCurrency);
   final base = code == null ? Currency.eur : Currency.of(code);
   unawaited(ref.read(ratesServiceProvider).refreshIfStale(base));
+  return true;
 });

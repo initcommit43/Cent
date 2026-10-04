@@ -1,5 +1,6 @@
 import 'package:cent/app.dart';
 import 'package:cent/core/database/app_database.dart';
+import 'package:cent/data/demo_seeder.dart';
 import 'package:cent/data/providers.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/widgets.dart';
@@ -11,12 +12,12 @@ import 'helpers.dart';
 void main() {
   late ProviderContainer container;
   late AppDatabase db;
+  final now = DateTime(2026, 10, 4, 19, 30);
 
   setUp(() async {
     db = AppDatabase(NativeDatabase.memory());
-    container = ProviderContainer(
-      overrides: testOverrides(db, DateTime(2026, 10, 4, 19, 30)),
-    );
+    container = ProviderContainer(overrides: testOverrides(db, now));
+    await DemoSeeder(db, now: now).seed();
     await container.read(appStartupProvider.future);
   });
 

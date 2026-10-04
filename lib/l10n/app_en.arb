@@ -848,5 +848,58 @@
   "unlockReason": "Unlock Cent to see your finances",
   "lockedTitle": "Cent is locked",
   "unlock": "Unlock",
-  "lockUnavailable": "Set up a screen lock on this phone to use app lock."
+  "lockUnavailable": "Set up a screen lock on this phone to use app lock.",
+  "welcomeTitle": "Easy financial planning.",
+  "welcomeBody": "Track spending, budgets and goals in one place. Everything stays on your phone.",
+  "getStarted": "Get started",
+  "welcomeFootnote": "No account. No bank login.",
+  "continueLabel": "Continue",
+  "chooseCurrencyTitle": "Choose your currency",
+  "chooseCurrencyBody": "Totals, budgets and insights use it. You can change it later in Settings.",
+  "searchCurrencies": "Search currencies",
+  "firstAccountTitle": "Add your first account",
+  "firstAccountBody": "Start with the account you use most. You can add more later.",
+  "defaultAccountName": "Main account",
+  "howToStartTitle": "How do you want to start?",
+  "howToStartBody": "You can switch any time in Settings.",
+  "demoOptionTitle": "Explore with demo data",
+  "demoOptionBody": "Three months of realistic transactions, budgets and goals. Clear it with one tap.",
+  "freshOptionTitle": "Start fresh",
+  "freshOptionBody": "Begin with an empty app and just your {account}.",
+  "@freshOptionBody": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "lockTitle": "Keep Cent private",
+  "lockBody": "Lock the app with {method} so your finances stay private, even if someone else picks up your phone.",
+  "@lockBody": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "turnOnLock": "Turn on {method}",
+  "@turnOnLock": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "notNow": "Not now",
+  "stepOf": "Step {step} of {total}",
+  "@stepOf": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }
