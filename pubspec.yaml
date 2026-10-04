@@ -47,3 +47,21 @@ flutter:
           weight: 500
         - asset: assets/fonts/HankenGrotesk-SemiBold.ttf
           weight: 600
+    # Cupertino dialogs and action sheets hardcode these families; mapping
+    # them keeps system sheets in the app's typeface.
+    - family: CupertinoSystemText
+      fonts:
+        - asset: assets/fonts/HankenGrotesk-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/HankenGrotesk-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/HankenGrotesk-SemiBold.ttf
+          weight: 600
+    - family: CupertinoSystemDisplay
+      fonts:
+        - asset: assets/fonts/HankenGrotesk-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/HankenGrotesk-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/HankenGrotesk-SemiBold.ttf
+          weight: 600
