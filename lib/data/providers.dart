@@ -1,8 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/database/app_database.dart';
+import '../core/money/currency.dart';
 import 'accounts_repository.dart';
+import 'budgets_repository.dart';
 import 'categories_repository.dart';
+import 'demo_seeder.dart';
 import 'rates_repository.dart';
 import 'settings_repository.dart';
 import 'transactions_repository.dart';
@@ -33,3 +36,40 @@ final settingsRepositoryProvider = Provider(
 final ratesRepositoryProvider = Provider(
   (ref) => RatesRepository(ref.watch(databaseProvider)),
 );
+
+final budgetsRepositoryProvider = Provider(
+  (ref) => BudgetsRepository(ref.watch(databaseProvider)),
+);
+
+final accountsProvider = StreamProvider<List<AccountWithBalance>>(
+  (ref) => ref.watch(accountsRepositoryProvider).watchAll(),
+);
+
+/// Source of "now", overridden in tests so date logic is deterministic.
+final clockProvider = Provider<DateTime Function()>((ref) => DateTime.now);
+
+final baseCurrencyProvider = StreamProvider<Currency>((ref) {
+  return ref
+      .watch(settingsRepositoryProvider)
+      .watch(SettingKeys.baseCurrency)
+      .map((code) => code == null ? Currency.eur : Currency.of(code));
+});
+
+final converterProvider = StreamProvider<CurrencyConverter>((ref) async* {
+  final base = await ref.watch(baseCurrencyProvider.future);
+  yield* ref.watch(ratesRepositoryProvider).watchConverter(base);
+});
+
+/// Prepares the database before the first frame.
+final appStartupProvider = FutureProvider<void>((ref) async {
+  final db = ref.watch(databaseProvider);
+  final hasAccounts = await db
+      .select(db.accounts)
+      .get()
+      .then((rows) => rows.isNotEmpty);
+  // Onboarding (where users choose demo data or a fresh start) is not built
+  // yet, so a first launch gets the demo data directly.
+  if (!hasAccounts) {
+    await DemoSeeder(db, now: ref.read(clockProvider)()).seed();
+  }
+});
