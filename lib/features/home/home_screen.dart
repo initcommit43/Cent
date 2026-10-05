@@ -14,6 +14,8 @@ import '../../core/theme/cent_tokens.dart';
 import '../../core/theme/cent_typography.dart';
 import '../../core/widgets/cent_button.dart';
 import '../../core/widgets/cent_card.dart';
+import '../../core/widgets/content_states.dart';
+import '../../core/widgets/ghost.dart';
 import '../../core/widgets/large_title_scaffold.dart';
 import '../../core/widgets/list_parts.dart';
 import '../../core/widgets/pressable.dart';
@@ -31,9 +33,15 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final summary = ref.watch(homeSummaryProvider).value;
+    final summaryAsync = ref.watch(homeSummaryProvider);
+    final recentAsync = ref.watch(recentEntriesProvider);
+    final summary = summaryAsync.value;
     final accounts = ref.watch(accountsProvider).value ?? const [];
-    final recent = ref.watch(recentEntriesProvider).value ?? const [];
+    final recent = recentAsync.value;
+    final failed = [
+      summaryAsync,
+      recentAsync,
+    ].any((a) => a.hasError && !a.hasValue);
     final now = ref.watch(clockProvider)();
     final margin = CentSpace.margin(MediaQuery.sizeOf(context).width);
 
@@ -53,51 +61,63 @@ class HomeScreen extends ConsumerWidget {
           onPressed: () => context.push(Routes.settings),
         ),
       ],
-      lead: summary == null
+      lead: failed
+          ? CentCard(
+              padding: const EdgeInsets.symmetric(vertical: CentSpace.xl),
+              child: ErrorState(onRetry: () => reloadData(ref)),
+            )
+          : summary == null
           ? const SizedBox(height: 180)
           : _BalanceCard(summary: summary),
       slivers: [
-        if (accounts.isNotEmpty)
-          SliverPadding(
-            padding: const EdgeInsets.only(top: CentSpace.xxl - 4),
-            sliver: SliverToBoxAdapter(
-              child: _AccountsStrip(accounts: accounts, margin: margin),
-            ),
-          ),
-        if (summary != null) section(_MonthCard(summary: summary, now: now)),
-        section(
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SectionHeader(
-                title: l10n.recent,
-                trailing: recent.isEmpty ? null : l10n.seeAll,
-                onTrailingTap: () => context.go(Routes.activity),
+        if (!failed) ...[
+          if (accounts.isNotEmpty)
+            SliverPadding(
+              padding: const EdgeInsets.only(top: CentSpace.xxl - 4),
+              sliver: SliverToBoxAdapter(
+                child: _AccountsStrip(accounts: accounts, margin: margin),
               ),
-              if (recent.isEmpty)
-                CentCard(
-                  child: Text(
-                    l10n.noTransactionsYet,
-                    style: CentType.body.copyWith(color: context.colors.mute),
+            ),
+          // A fresh start has nothing to sum up yet; the recent list below
+          // explains what to do first.
+          if (summary != null && (recent?.isNotEmpty ?? false))
+            section(_MonthCard(summary: summary, now: now)),
+          if (recent != null)
+            section(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SectionHeader(
+                    title: l10n.recent,
+                    trailing: recent.isEmpty ? null : l10n.seeAll,
+                    onTrailingTap: () => context.go(Routes.activity),
                   ),
-                )
-              else
-                CentGroup(
-                  children: [
-                    for (var i = 0; i < recent.length; i++)
-                      EntryRow(
-                        view: recent[i],
-                        now: now,
-                        subtitle: EntrySubtitle.date,
-                        showDivider: i < recent.length - 1,
-                        onTap: () =>
-                            context.push(Routes.homeEntry(recent[i].entry.id)),
-                      ),
-                  ],
-                ),
-            ],
-          ),
-        ),
+                  if (recent.isEmpty)
+                    EmptyState(
+                      margin: 0,
+                      preview: const GhostList(rows: 2),
+                      title: l10n.homeEmptyTitle,
+                      body: l10n.homeEmptyBody,
+                    )
+                  else
+                    CentGroup(
+                      children: [
+                        for (var i = 0; i < recent.length; i++)
+                          EntryRow(
+                            view: recent[i],
+                            now: now,
+                            subtitle: EntrySubtitle.date,
+                            showDivider: i < recent.length - 1,
+                            onTap: () => context.push(
+                              Routes.homeEntry(recent[i].entry.id),
+                            ),
+                          ),
+                      ],
+                    ),
+                ],
+              ),
+            ),
+        ],
       ],
     );
   }

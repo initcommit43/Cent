@@ -13,9 +13,11 @@ import '../../core/theme/cent_icons.dart';
 import '../../core/theme/cent_theme.dart';
 import '../../core/theme/cent_tokens.dart';
 import '../../core/theme/cent_typography.dart';
+import '../../core/widgets/cent_button.dart';
 import '../../core/widgets/cent_card.dart';
 import '../../core/widgets/cent_chip.dart';
-import '../../core/widgets/empty_state.dart';
+import '../../core/widgets/content_states.dart';
+import '../../core/widgets/ghost.dart';
 import '../../core/widgets/large_title_scaffold.dart';
 import '../../core/widgets/list_parts.dart';
 import '../../core/widgets/search_field.dart';
@@ -62,7 +64,8 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final entries = ref.watch(activityEntriesProvider).value;
+    final entriesAsync = ref.watch(activityEntriesProvider);
+    final entries = entriesAsync.value;
     final converter = ref.watch(converterProvider).value;
     final filter = ref.watch(activityFilterProvider);
     final now = ref.watch(clockProvider)();
@@ -101,72 +104,93 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
             ),
       slivers: _searching
           ? _searchSlivers(context, now, margin)
-          : [
-              if (groups != null && groups.isEmpty)
-                SliverPadding(
-                  padding: const EdgeInsets.only(top: 72),
-                  sliver: SliverToBoxAdapter(
-                    child: filter.isEmpty
-                        ? EmptyState(
-                            icon: CentIcons.named('receipt'),
-                            title: l10n.noTransactionsIn(
-                              monthName(
-                                context,
-                                ref.watch(activityMonthProvider),
+          : pendingSlivers(
+                  [entriesAsync],
+                  ghost: const _ActivityGhost(),
+                  onRetry: () => reloadData(ref),
+                ) ??
+                [
+                  if (groups != null && groups.isEmpty)
+                    filter.isEmpty
+                        ? stateSliver(
+                            EmptyState(
+                              preview: const _ActivityGhost(),
+                              title: l10n.noTransactionsIn(
+                                monthName(
+                                  context,
+                                  ref.watch(activityMonthProvider),
+                                ),
+                              ),
+                              body: l10n.noTransactionsInBody,
+                              // New entries default to today, so offering one
+                              // from a past month would land somewhere else.
+                              action:
+                                  ref
+                                      .watch(activityMonthProvider.notifier)
+                                      .isCurrent
+                                  ? CentButton(
+                                      label: l10n.addTransaction,
+                                      icon: CentIcons.add,
+                                      onPressed: () => unawaited(
+                                        showAddTransaction(context),
+                                      ),
+                                    )
+                                  : null,
+                            ),
+                          )
+                        : stateSliver(
+                            top: 72,
+                            EmptyState(
+                              icon: CentIcons.search,
+                              title: l10n.noMatches,
+                              body: l10n.noMatchesBody,
+                              action: TextButton(
+                                onPressed: ref
+                                    .read(activityFilterProvider.notifier)
+                                    .reset,
+                                child: Text(l10n.clearFilters),
                               ),
                             ),
-                            body: l10n.noTransactionsInBody,
-                          )
-                        : EmptyState(
-                            icon: CentIcons.search,
-                            title: l10n.noMatches,
-                            body: l10n.noMatchesBody,
-                            action: TextButton(
-                              onPressed: ref
-                                  .read(activityFilterProvider.notifier)
-                                  .reset,
-                              child: Text(l10n.clearFilters),
-                            ),
                           ),
-                  ),
-                ),
-              if (groups != null)
-                for (final (day, items) in groups)
-                  SliverPadding(
-                    padding: EdgeInsets.fromLTRB(
-                      margin,
-                      CentSpace.xl,
-                      margin,
-                      0,
-                    ),
-                    sliver: SliverToBoxAdapter(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          SectionHeader(
-                            title: dayLabel(context, day, now),
-                            trailing: converter == null
-                                ? null
-                                : _dayTotal(EntryTotals(items, converter).net),
-                          ),
-                          CentGroup(
+                  if (groups != null)
+                    for (final (day, items) in groups)
+                      SliverPadding(
+                        padding: EdgeInsets.fromLTRB(
+                          margin,
+                          CentSpace.xl,
+                          margin,
+                          0,
+                        ),
+                        sliver: SliverToBoxAdapter(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              for (var i = 0; i < items.length; i++)
-                                EntryRow(
-                                  view: items[i],
-                                  now: now,
-                                  showDivider: i < items.length - 1,
-                                  onTap: () => context.push(
-                                    Routes.activityEntry(items[i].entry.id),
-                                  ),
-                                ),
+                              SectionHeader(
+                                title: dayLabel(context, day, now),
+                                trailing: converter == null
+                                    ? null
+                                    : _dayTotal(
+                                        EntryTotals(items, converter).net,
+                                      ),
+                              ),
+                              CentGroup(
+                                children: [
+                                  for (var i = 0; i < items.length; i++)
+                                    EntryRow(
+                                      view: items[i],
+                                      now: now,
+                                      showDivider: i < items.length - 1,
+                                      onTap: () => context.push(
+                                        Routes.activityEntry(items[i].entry.id),
+                                      ),
+                                    ),
+                                ],
+                              ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-            ],
+                ],
     );
   }
 
@@ -197,14 +221,12 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
     }
     if (results.isEmpty) {
       return [
-        SliverPadding(
-          padding: const EdgeInsets.only(top: 72),
-          sliver: SliverToBoxAdapter(
-            child: EmptyState(
-              icon: CentIcons.search,
-              title: l10n.noMatchesFor(query),
-              body: l10n.noMatchesBody,
-            ),
+        stateSliver(
+          top: 72,
+          EmptyState(
+            icon: CentIcons.search,
+            title: l10n.noMatchesFor(query),
+            body: l10n.noMatchesBody,
           ),
         ),
       ];
@@ -345,4 +367,31 @@ class _MonthArrow extends StatelessWidget {
       ),
     );
   }
+}
+
+class _ActivityGhost extends StatelessWidget {
+  const _ActivityGhost();
+
+  @override
+  Widget build(BuildContext context) => const Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      Padding(
+        padding: EdgeInsets.fromLTRB(
+          CentSpace.lg,
+          CentSpace.sm,
+          CentSpace.lg,
+          CentSpace.md,
+        ),
+        child: Row(
+          children: [
+            GhostBar(width: 56, height: 8),
+            Spacer(),
+            GhostBar(width: 44, height: 8),
+          ],
+        ),
+      ),
+      GhostList(),
+    ],
+  );
 }
