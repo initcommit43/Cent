@@ -24,6 +24,10 @@ final databaseProvider = Provider<AppDatabase>((ref) {
   return db;
 });
 
+/// Reopens the database, so every repository and stream starts over. The
+/// retry behind a screen that failed to load.
+void reloadData(WidgetRef ref) => ref.invalidate(databaseProvider);
+
 final accountsRepositoryProvider = Provider(
   (ref) => AccountsRepository(ref.watch(databaseProvider)),
 );

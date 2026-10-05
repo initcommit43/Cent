@@ -69,6 +69,12 @@
   "noBudgetSpent": "Spent so far this month",
   "recent": "Recent",
   "noTransactionsYet": "No transactions yet",
+  "homeEmptyTitle": "Nothing logged yet",
+  "homeEmptyBody": "Tap Add transaction after your next purchase. It only takes a few seconds.",
+  "loading": "Loading",
+  "loadFailedTitle": "Couldn’t load this",
+  "loadFailedBody": "Your data is still safe on this phone. Try again, and restart Cent if it keeps happening.",
+  "tryAgain": "Try again",
   "searchTransactions": "Search transactions",
   "filters": "Filters",
   "previousMonth": "Previous month",
@@ -93,7 +99,7 @@
       }
     }
   },
-  "noTransactionsInBody": "Transactions you add for this month show up here.",
+  "noTransactionsInBody": "Anything you add this month shows up here.",
   "noMatchesFor": "No matches for “{query}”",
   "@noMatchesFor": {
     "placeholders": {
@@ -279,7 +285,7 @@
       }
     }
   },
-  "noAccountTransactions": "No transactions in this account yet.",
+  "noAccountTransactions": "Payments and transfers in this account show up here.",
   "budgets": "Budgets",
   "goals": "Goals",
   "recurring": "Recurring",

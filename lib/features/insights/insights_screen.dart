@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,13 +15,16 @@ import '../../core/theme/cent_icons.dart';
 import '../../core/theme/cent_theme.dart';
 import '../../core/theme/cent_tokens.dart';
 import '../../core/theme/cent_typography.dart';
+import '../../core/widgets/cent_button.dart';
 import '../../core/widgets/cent_card.dart';
 import '../../core/widgets/charts/bar_charts.dart';
-import '../../core/widgets/empty_state.dart';
+import '../../core/widgets/content_states.dart';
+import '../../core/widgets/ghost.dart';
 import '../../core/widgets/large_title_scaffold.dart';
 import '../../core/widgets/list_parts.dart';
 import '../../data/providers.dart';
 import '../../l10n/app_localizations.dart';
+import '../add_transaction/add_transaction_sheet.dart';
 import '../transactions/widgets/entry_row.dart';
 import 'insights_math.dart';
 import 'insights_providers.dart';
@@ -32,7 +37,8 @@ class InsightsScreen extends ConsumerWidget {
     final c = context.colors;
     final l10n = AppLocalizations.of(context);
     final period = ref.watch(insightsPeriodProvider);
-    final insights = ref.watch(insightsProvider).value;
+    final async = ref.watch(insightsProvider);
+    final insights = async.value;
     final now = ref.watch(clockProvider)();
     final margin = CentSpace.margin(MediaQuery.sizeOf(context).width);
 
@@ -71,68 +77,74 @@ class InsightsScreen extends ConsumerWidget {
           },
         ),
       ),
-      slivers: insights == null
-          ? const []
-          : [
-              if (insights.spent.isZero)
-                SliverPadding(
-                  padding: const EdgeInsets.only(top: 64),
-                  sliver: SliverToBoxAdapter(
-                    child: EmptyState(
-                      icon: CentIcons.named('receipt'),
-                      title: l10n.noSpendingTitle,
-                      body: l10n.noSpendingBody,
-                    ),
+      slivers:
+          pendingSlivers(
+            [async],
+            ghost: const _InsightsGhost(),
+            onRetry: () => reloadData(ref),
+          ) ??
+          [
+            if (insights != null && insights.spent.isZero)
+              stateSliver(
+                EmptyState(
+                  preview: const _InsightsGhost(),
+                  title: l10n.noSpendingTitle,
+                  body: l10n.noSpendingBody,
+                  action: CentButton(
+                    label: l10n.addTransaction,
+                    icon: CentIcons.add,
+                    onPressed: () => unawaited(showAddTransaction(context)),
                   ),
-                )
-              else ...[
-                section(
-                  _CategoryCard(insights: insights, period: period, now: now),
                 ),
-                section(_TrendCard(trend: insights.trend)),
-                if (insights.comparison != null)
-                  section(
-                    CentCard(
-                      color: c.cream,
-                      child: Text(
-                        _comparisonText(
-                          context,
-                          insights.comparison!,
-                          period,
-                          now,
-                        ),
-                        style: CentType.callout.copyWith(color: c.ink),
+              )
+            else if (insights != null) ...[
+              section(
+                _CategoryCard(insights: insights, period: period, now: now),
+              ),
+              section(_TrendCard(trend: insights.trend)),
+              if (insights.comparison != null)
+                section(
+                  CentCard(
+                    color: c.cream,
+                    child: Text(
+                      _comparisonText(
+                        context,
+                        insights.comparison!,
+                        period,
+                        now,
                       ),
+                      style: CentType.callout.copyWith(color: c.ink),
                     ),
                   ),
-                if (insights.biggest.isNotEmpty)
-                  section(
-                    top: CentSpace.xl,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        SectionHeader(title: l10n.biggestExpenses),
-                        CentGroup(
-                          children: [
-                            for (var i = 0; i < insights.biggest.length; i++)
-                              EntryRow(
-                                view: insights.biggest[i],
-                                now: now,
-                                subtitle: EntrySubtitle.date,
-                                showDivider: i < insights.biggest.length - 1,
-                                onTap: () => context.push(
-                                  Routes.insightsEntry(
-                                    insights.biggest[i].entry.id,
-                                  ),
+                ),
+              if (insights.biggest.isNotEmpty)
+                section(
+                  top: CentSpace.xl,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SectionHeader(title: l10n.biggestExpenses),
+                      CentGroup(
+                        children: [
+                          for (var i = 0; i < insights.biggest.length; i++)
+                            EntryRow(
+                              view: insights.biggest[i],
+                              now: now,
+                              subtitle: EntrySubtitle.date,
+                              showDivider: i < insights.biggest.length - 1,
+                              onTap: () => context.push(
+                                Routes.insightsEntry(
+                                  insights.biggest[i].entry.id,
                                 ),
                               ),
-                          ],
-                        ),
-                      ],
-                    ),
+                            ),
+                        ],
+                      ),
+                    ],
                   ),
-              ],
+                ),
             ],
+          ],
     );
   }
 
@@ -372,4 +384,71 @@ class _Legend extends StatelessWidget {
       ),
     ],
   );
+}
+
+class _InsightsGhost extends StatelessWidget {
+  const _InsightsGhost();
+
+  static const _rows = [(88.0, 64.0), (104.0, 56.0), (72.0, 48.0)];
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final segments = [
+      (5, c.tintPatina),
+      (3, c.tintCopper),
+      (2, c.tintBrass),
+      (1, c.tintBlush),
+    ];
+    final tiles = [c.tintPatina, c.tintCopper, c.tintBrass];
+
+    return CentCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: GhostBar(width: 176, height: 14),
+          ),
+          const SizedBox(height: CentSpace.lg),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: GhostBar(width: 128, height: 24),
+          ),
+          const SizedBox(height: CentSpace.lg),
+          Row(
+            children: [
+              for (var i = 0; i < segments.length; i++) ...[
+                if (i > 0) const SizedBox(width: 3),
+                Expanded(
+                  flex: segments[i].$1,
+                  child: GhostBar(
+                    width: double.infinity,
+                    height: 12,
+                    color: segments[i].$2,
+                  ),
+                ),
+              ],
+            ],
+          ),
+          const SizedBox(height: CentSpace.sm),
+          for (var i = 0; i < _rows.length; i++)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: CentSpace.sm),
+              child: Row(
+                children: [
+                  GhostTile(size: 32, color: tiles[i]),
+                  const SizedBox(width: CentSpace.md),
+                  GhostBar(width: _rows[i].$1, height: 11),
+                  const Spacer(),
+                  const GhostBar(width: 28, height: 9),
+                  const SizedBox(width: CentSpace.xl),
+                  GhostBar(width: _rows[i].$2, height: 11),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 }

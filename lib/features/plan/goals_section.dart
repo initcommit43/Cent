@@ -13,7 +13,8 @@ import '../../core/theme/cent_tokens.dart';
 import '../../core/theme/cent_typography.dart';
 import '../../core/widgets/cent_button.dart';
 import '../../core/widgets/cent_card.dart';
-import '../../core/widgets/empty_state.dart';
+import '../../core/widgets/content_states.dart';
+import '../../core/widgets/ghost.dart';
 import '../../core/widgets/list_parts.dart';
 import '../../core/widgets/pressable.dart';
 import '../../data/goals_repository.dart';
@@ -24,23 +25,26 @@ import 'plan_providers.dart';
 
 List<Widget> goalsSlivers(BuildContext context, WidgetRef ref, double margin) {
   final l10n = AppLocalizations.of(context);
-  final goals = ref.watch(goalsProvider).value;
-  if (goals == null) return const [];
+  final async = ref.watch(goalsProvider);
+  final pending = pendingSlivers(
+    [async],
+    ghost: const _GoalsGhost(),
+    onRetry: () => reloadData(ref),
+  );
+  if (pending != null) return pending;
+  final goals = async.requireValue;
 
   if (goals.isEmpty) {
     return [
-      SliverPadding(
-        padding: const EdgeInsets.only(top: 64),
-        sliver: SliverToBoxAdapter(
-          child: EmptyState(
-            icon: CentIcons.named('plane'),
-            title: l10n.noGoalsTitle,
-            body: l10n.noGoalsBody,
-            action: CentButton(
-              label: l10n.createGoal,
-              icon: CentIcons.add,
-              onPressed: () => unawaited(showGoalSheet(context)),
-            ),
+      stateSliver(
+        EmptyState(
+          preview: const _GoalsGhost(),
+          title: l10n.noGoalsTitle,
+          body: l10n.noGoalsBody,
+          action: CentButton(
+            label: l10n.createGoal,
+            icon: CentIcons.add,
+            onPressed: () => unawaited(showGoalSheet(context)),
           ),
         ),
       ),
@@ -202,6 +206,54 @@ class _CompletedRow extends StatelessWidget {
           if (showDivider) const InsetDivider(),
         ],
       ),
+    );
+  }
+}
+
+class _GoalsGhost extends StatelessWidget {
+  const _GoalsGhost();
+
+  static const _goals = [(104.0, 0.55), (84.0, 0.3)];
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final tints = [c.tintPatina, c.tintBrass];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        for (var i = 0; i < _goals.length; i++) ...[
+          if (i > 0) const SizedBox(height: CentSpace.md),
+          CentCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    GhostTile(color: tints[i]),
+                    const SizedBox(width: CentSpace.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GhostBar(width: _goals[i].$1, height: 12),
+                          const SizedBox(height: CentSpace.sm),
+                          const GhostBar(width: 128, height: 8),
+                        ],
+                      ),
+                    ),
+                    const GhostBar(width: 44, height: 18),
+                  ],
+                ),
+                const SizedBox(height: CentSpace.lg),
+                GhostProgress(value: _goals[i].$2),
+                const SizedBox(height: CentSpace.md),
+                const GhostBar(width: 200, height: 8),
+              ],
+            ),
+          ),
+        ],
+      ],
     );
   }
 }

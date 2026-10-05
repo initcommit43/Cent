@@ -18,6 +18,8 @@ import '../../core/theme/cent_typography.dart';
 import '../../core/widgets/cent_button.dart';
 import '../../core/widgets/cent_card.dart';
 import '../../core/widgets/charts/line_chart.dart';
+import '../../core/widgets/content_states.dart';
+import '../../core/widgets/ghost.dart';
 import '../../core/widgets/large_title_scaffold.dart';
 import '../../core/widgets/list_parts.dart';
 import '../../data/accounts_repository.dart';
@@ -147,11 +149,11 @@ class _AccountDetailScreenState extends ConsumerState<AccountDetailScreen> {
           ),
           const SizedBox(height: CentSpace.xl),
           if (entries != null && entries.isEmpty)
-            CentCard(
-              child: Text(
-                l10n.noAccountTransactions,
-                style: CentType.body.copyWith(color: c.mute),
-              ),
+            EmptyState(
+              margin: 0,
+              preview: const GhostList(rows: 2),
+              title: l10n.noTransactionsYet,
+              body: l10n.noAccountTransactions,
             ),
           if (entries != null)
             for (final (day, items) in groupByDay(entries))

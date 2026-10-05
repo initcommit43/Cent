@@ -15,7 +15,8 @@ import '../../core/theme/cent_tokens.dart';
 import '../../core/theme/cent_typography.dart';
 import '../../core/widgets/cent_button.dart';
 import '../../core/widgets/cent_card.dart';
-import '../../core/widgets/empty_state.dart';
+import '../../core/widgets/content_states.dart';
+import '../../core/widgets/ghost.dart';
 import '../../core/widgets/list_parts.dart';
 import '../../data/providers.dart';
 import '../../data/recurrence.dart';
@@ -31,25 +32,29 @@ List<Widget> recurringSlivers(
   double margin,
 ) {
   final l10n = AppLocalizations.of(context);
-  final rules = ref.watch(rulesProvider).value;
-  final converter = ref.watch(converterProvider).value;
+  final rulesAsync = ref.watch(rulesProvider);
+  final converterAsync = ref.watch(converterProvider);
   final now = ref.watch(clockProvider)();
-  if (rules == null || converter == null) return const [];
+  final pending = pendingSlivers(
+    [rulesAsync, converterAsync],
+    ghost: const _RecurringGhost(),
+    onRetry: () => reloadData(ref),
+  );
+  if (pending != null) return pending;
+  final rules = rulesAsync.requireValue;
+  final converter = converterAsync.requireValue;
 
   if (rules.isEmpty) {
     return [
-      SliverPadding(
-        padding: const EdgeInsets.only(top: 64),
-        sliver: SliverToBoxAdapter(
-          child: EmptyState(
-            icon: CentIcons.repeat,
-            title: l10n.noRecurringTitle,
-            body: l10n.noRecurringBody,
-            action: CentButton(
-              label: l10n.addTransaction,
-              icon: CentIcons.add,
-              onPressed: () => unawaited(showAddTransaction(context)),
-            ),
+      stateSliver(
+        EmptyState(
+          preview: const _RecurringGhost(),
+          title: l10n.noRecurringTitle,
+          body: l10n.noRecurringBody,
+          action: CentButton(
+            label: l10n.addTransaction,
+            icon: CentIcons.add,
+            onPressed: () => unawaited(showAddTransaction(context)),
           ),
         ),
       ),
@@ -221,4 +226,11 @@ class RuleRow extends StatelessWidget {
       ),
     );
   }
+}
+
+class _RecurringGhost extends StatelessWidget {
+  const _RecurringGhost();
+
+  @override
+  Widget build(BuildContext context) => const GhostList();
 }

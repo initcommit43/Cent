@@ -15,7 +15,8 @@ import '../../core/theme/cent_tokens.dart';
 import '../../core/theme/cent_typography.dart';
 import '../../core/widgets/cent_button.dart';
 import '../../core/widgets/cent_card.dart';
-import '../../core/widgets/empty_state.dart';
+import '../../core/widgets/content_states.dart';
+import '../../core/widgets/ghost.dart';
 import '../../core/widgets/list_parts.dart';
 import '../../data/providers.dart';
 import '../../l10n/app_localizations.dart';
@@ -29,23 +30,26 @@ List<Widget> budgetsSlivers(
   double margin,
 ) {
   final l10n = AppLocalizations.of(context);
-  final budgets = ref.watch(budgetProgressProvider).value;
-  if (budgets == null) return const [];
+  final async = ref.watch(budgetProgressProvider);
+  final pending = pendingSlivers(
+    [async],
+    ghost: const _BudgetsGhost(),
+    onRetry: () => reloadData(ref),
+  );
+  if (pending != null) return pending;
+  final budgets = async.requireValue;
 
   if (budgets.isEmpty) {
     return [
-      SliverPadding(
-        padding: const EdgeInsets.only(top: 64),
-        sliver: SliverToBoxAdapter(
-          child: EmptyState(
-            icon: CentIcons.target,
-            title: l10n.noBudgetsTitle,
-            body: l10n.noBudgetsBody,
-            action: CentButton(
-              label: l10n.createBudget,
-              icon: CentIcons.add,
-              onPressed: () => unawaited(showBudgetSheet(context)),
-            ),
+      stateSliver(
+        EmptyState(
+          preview: const _BudgetsGhost(),
+          title: l10n.noBudgetsTitle,
+          body: l10n.noBudgetsBody,
+          action: CentButton(
+            label: l10n.createBudget,
+            icon: CentIcons.add,
+            onPressed: () => unawaited(showBudgetSheet(context)),
           ),
         ),
       ),
@@ -230,6 +234,49 @@ class BudgetRow extends StatelessWidget {
           if (showDivider) const InsetDivider(indent: CentSpace.lg),
         ],
       ),
+    );
+  }
+}
+
+class _BudgetsGhost extends StatelessWidget {
+  const _BudgetsGhost();
+
+  static const _rows = [(96.0, 0.42), (72.0, 0.7), (112.0, 0.18)];
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final tints = [c.tintCopper, c.tintBrass, c.tintPatina];
+    return CentGroup(
+      children: [
+        for (var i = 0; i < _rows.length; i++)
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(CentSpace.lg - 2),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        GhostTile(size: 32, color: tints[i]),
+                        const SizedBox(width: CentSpace.md),
+                        GhostBar(width: _rows[i].$1, height: 11),
+                        const Spacer(),
+                        const GhostBar(width: 64, height: 9),
+                      ],
+                    ),
+                    const SizedBox(height: CentSpace.md),
+                    GhostProgress(value: _rows[i].$2),
+                    const SizedBox(height: CentSpace.sm),
+                    const GhostBar(width: 88, height: 8),
+                  ],
+                ),
+              ),
+              if (i < _rows.length - 1) const InsetDivider(indent: 16),
+            ],
+          ),
+      ],
     );
   }
 }
