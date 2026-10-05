@@ -45,9 +45,9 @@ I used it to practice building a complete, production-quality mobile app on my o
 | :---: | :---: | :---: |
 | <img src="docs/screenshots/onboarding.png" width="220" alt="Onboarding welcome screen"> | <img src="docs/screenshots/activity.png" width="220" alt="Activity list grouped by day"> | <img src="docs/screenshots/add.png" width="220" alt="Add transaction sheet with keypad"> |
 
-| Savings goals | Dark mode | Dark mode |
+| Home (dark) | Savings goals (dark) | Insights (dark) |
 | :---: | :---: | :---: |
-| <img src="docs/screenshots/goals.png" width="220" alt="Savings goals with progress"> | <img src="docs/screenshots/home-dark.png" width="220" alt="Home screen in dark mode"> | <img src="docs/screenshots/insights-dark.png" width="220" alt="Insights screen in dark mode"> |
+| <img src="docs/screenshots/home-dark.png" width="220" alt="Home screen in dark mode"> | <img src="docs/screenshots/goals-dark.png" width="220" alt="Savings goals in dark mode"> | <img src="docs/screenshots/insights-dark.png" width="220" alt="Insights screen in dark mode"> |
 
 ## Tech stack
 
