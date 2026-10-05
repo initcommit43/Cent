@@ -1,0 +1,911 @@
+{
+  "@@locale": "en",
+  "appTitle": "Cent",
+  "tabHome": "Home",
+  "tabActivity": "Activity",
+  "tabPlan": "Plan",
+  "tabInsights": "Insights",
+  "settings": "Settings",
+  "seeAll": "See all",
+  "cancel": "Cancel",
+  "reset": "Reset",
+  "edit": "Edit",
+  "today": "Today",
+  "yesterday": "Yesterday",
+  "transfer": "Transfer",
+  "totalBalance": "Total balance",
+  "netThisMonth": "{amount} this month",
+  "@netThisMonth": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "accounts": "Accounts",
+  "monthSpending": "{month} spending",
+  "@monthSpending": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
+  "daysLeft": "{count, plural, =1{1 day left} other{{count} days left}}",
+  "@daysLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ofAmount": "of {amount}",
+  "@ofAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "leftPerDay": "{left} left · about {perDay} a day",
+  "@leftPerDay": {
+    "placeholders": {
+      "left": {
+        "type": "String"
+      },
+      "perDay": {
+        "type": "String"
+      }
+    }
+  },
+  "overBudgetBy": "{amount} over budget",
+  "@overBudgetBy": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "noBudgetSpent": "Spent so far this month",
+  "recent": "Recent",
+  "noTransactionsYet": "No transactions yet",
+  "homeEmptyTitle": "Nothing logged yet",
+  "homeEmptyBody": "Tap Add transaction after your next purchase. It only takes a few seconds.",
+  "loading": "Loading",
+  "loadFailedTitle": "Couldn’t load this",
+  "loadFailedBody": "Your data is still safe on this phone. Try again, and restart Cent if it keeps happening.",
+  "tryAgain": "Try again",
+  "searchTransactions": "Search transactions",
+  "filters": "Filters",
+  "previousMonth": "Previous month",
+  "nextMonth": "Next month",
+  "all": "All",
+  "expenses": "Expenses",
+  "income": "Income",
+  "transfers": "Transfers",
+  "spentSummary": "{amount} spent",
+  "@spentSummary": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "noTransactionsIn": "Nothing in {month}",
+  "@noTransactionsIn": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
+  "noTransactionsInBody": "Anything you add this month shows up here.",
+  "noMatchesFor": "No matches for “{query}”",
+  "@noMatchesFor": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "noMatches": "No matches",
+  "noMatchesBody": "Try another word, or clear the filters.",
+  "clearFilters": "Clear filters",
+  "searchTip": "Search matches names, notes and categories.",
+  "resultsCount": "{count, plural, =1{1 result} other{{count} results}}",
+  "@resultsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterType": "Type",
+  "filterAccounts": "Accounts",
+  "filterCategories": "Categories",
+  "filterAmount": "Amount",
+  "filterMin": "Min",
+  "filterMax": "Max",
+  "showResults": "{count, plural, =0{No transactions} =1{Show 1 transaction} other{Show {count} transactions}}",
+  "@showResults": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "detailCategory": "Category",
+  "detailAccount": "Account",
+  "detailDate": "Date",
+  "detailRepeat": "Repeat",
+  "detailNote": "Note",
+  "repeatNever": "Never",
+  "repeatMonthly": "Monthly",
+  "deleteTransaction": "Delete transaction",
+  "deleteConfirm": "Delete “{title}, {amount}”? This can’t be undone.",
+  "@deleteConfirm": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "merchantInsight": "You’ve spent {amount} at {title} this month across {count, plural, =1{1 visit} other{{count} visits}}.",
+  "@merchantInsight": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "title": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "addTransaction": "Add transaction",
+  "newTransaction": "New transaction",
+  "newExpense": "New expense",
+  "newIncome": "New income",
+  "newTransfer": "New transfer",
+  "editTransaction": "Edit transaction",
+  "back": "Back",
+  "done": "Done",
+  "continueAction": "Continue",
+  "expense": "Expense",
+  "deleteKey": "Delete",
+  "decimalPoint": "Decimal point",
+  "chooseAccount": "Choose account",
+  "fromAccount": "From",
+  "toAccount": "To",
+  "fromAccountNamed": "From {account}",
+  "@fromAccountNamed": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "toAccountNamed": "To {account}",
+  "@toAccountNamed": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "arrivesAs": "Arrives as {amount}",
+  "@arrivesAs": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "noRateAvailable": "No exchange rate for this pair yet",
+  "fieldName": "Name",
+  "fieldNameHint": "Where or what was it?",
+  "fieldNote": "Note",
+  "fieldNoteHint": "Add a note",
+  "category": "Category",
+  "saveExpense": "Save expense",
+  "saveIncome": "Save income",
+  "saveTransfer": "Transfer {amount}",
+  "@saveTransfer": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "saveChanges": "Save changes",
+  "chooseDate": "Date",
+  "currency": "Currency",
+  "netWorth": "Net worth",
+  "acrossAccounts": "{count, plural, =1{Across 1 account} other{Across {count} accounts}}",
+  "@acrossAccounts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupEveryday": "Everyday",
+  "groupSavings": "Savings",
+  "groupCash": "Cash",
+  "typeChecking": "Checking",
+  "typeSavings": "Savings",
+  "typeCash": "Cash",
+  "typeCard": "Card",
+  "approxAmount": "≈ {amount}",
+  "@approxAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "transferBetweenAccounts": "Transfer between accounts",
+  "newAccount": "New account",
+  "editAccount": "Edit account",
+  "accountNameHint": "Main account, Savings, Wallet…",
+  "accountType": "Type",
+  "startingBalance": "Starting balance",
+  "startingBalanceHint": "Enter a negative amount for a card balance you owe.",
+  "includeInNetWorth": "Include in net worth",
+  "save": "Save",
+  "add": "Add",
+  "archiveAccount": "Archive account",
+  "archiveAccountConfirm": "Archive “{name}”? It disappears from lists and totals. Its history stays in Activity.",
+  "@archiveAccountConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "period30Days": "30 days",
+  "period3Months": "3 months",
+  "periodYear": "Year",
+  "balanceChartLabel": "Balance over {period}, from {start} to {end}",
+  "@balanceChartLabel": {
+    "placeholders": {
+      "period": {
+        "type": "String"
+      },
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "noAccountTransactions": "Payments and transfers in this account show up here.",
+  "budgets": "Budgets",
+  "goals": "Goals",
+  "recurring": "Recurring",
+  "leftOfTotal": "left of {amount}",
+  "@leftOfTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "amountLeft": "{amount} left",
+  "@amountLeft": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "amountOver": "{amount} over",
+  "@amountOver": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "spentOf": "{spent} of {budget}",
+  "@spentOf": {
+    "placeholders": {
+      "spent": {
+        "type": "String"
+      },
+      "budget": {
+        "type": "String"
+      }
+    }
+  },
+  "budgetSummaryFooter": "{days} · about {perDay} a day",
+  "@budgetSummaryFooter": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      },
+      "perDay": {
+        "type": "String"
+      }
+    }
+  },
+  "budgetCount": "{count, plural, =1{1 budget} other{{count} budgets}}",
+  "@budgetCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "resetsOn": "of {amount} · resets {date}",
+  "@resetsOn": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "spendingPace": "Spending pace",
+  "aheadOfPace": "Ahead of plan",
+  "onPace": "On track",
+  "paceSpent": "Spent",
+  "paceEven": "Even pace",
+  "paceSummary": "You’ve used {percent}% of this budget. {days}.",
+  "@paceSummary": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      },
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "inThisBudget": "In this budget",
+  "newBudget": "New budget",
+  "editBudget": "Edit budget",
+  "deleteBudget": "Delete budget",
+  "budgetAverageHint": "You spent about {amount} a month here over the last 3 months.",
+  "@budgetAverageHint": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "period": "Period",
+  "periodWeekly": "Weekly",
+  "periodMonthly": "Monthly",
+  "periodYearly": "Yearly",
+  "amount": "Amount",
+  "noBudgetsTitle": "Give every euro a job",
+  "noBudgetsBody": "Set a budget for the categories you care about. Cent shows what’s left each day.",
+  "createBudget": "Create a budget",
+  "allBudgetsSet": "Every expense category has a budget.",
+  "savedOfTarget": "{saved} of {target}",
+  "@savedOfTarget": {
+    "placeholders": {
+      "saved": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "goalMonthlyByDate": "{amount} a month reaches it by {date}",
+  "@goalMonthlyByDate": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "goalNoDeadline": "No deadline",
+  "goalReached": "Goal reached",
+  "completedGoals": "Completed",
+  "percentSaved": "{percent}% saved · {remaining} to go",
+  "@percentSaved": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      },
+      "remaining": {
+        "type": "String"
+      }
+    }
+  },
+  "contributions": "Contributions",
+  "addMoney": "Add money",
+  "addMoneyTo": "Add to {goal}",
+  "@addMoneyTo": {
+    "placeholders": {
+      "goal": {
+        "type": "String"
+      }
+    }
+  },
+  "addAmount": "Add {amount}",
+  "@addAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "afterThisYouHave": "After this you’ll have {saved} of {target}.",
+  "@afterThisYouHave": {
+    "placeholders": {
+      "saved": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "startingAmount": "Starting amount",
+  "newGoal": "New goal",
+  "editGoal": "Edit goal",
+  "deleteGoal": "Delete goal",
+  "deleteGoalConfirm": "Delete “{name}” and its contributions?",
+  "@deleteGoalConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "target": "Target",
+  "targetDate": "Target date",
+  "noTargetDate": "None",
+  "clearDate": "Clear",
+  "icon": "Icon",
+  "color": "Color",
+  "goalNameHint": "Japan trip, new laptop, a safety net…",
+  "noGoalsTitle": "Save for something",
+  "noGoalsBody": "A trip, a laptop, a safety net. Set a target and Cent works out the monthly amount.",
+  "createGoal": "Create a goal",
+  "fixedCostsMonthly": "{amount} a month in fixed costs",
+  "@fixedCostsMonthly": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "recurringCount": "{count, plural, =1{1 recurring payment} other{{count} recurring payments}}",
+  "@recurringCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dueThisWeek": "This week",
+  "dueLaterThisMonth": "Later this month",
+  "dueLater": "Later",
+  "paused": "Paused",
+  "everyWeek": "Weekly",
+  "everyMonth": "Monthly",
+  "everyYear": "Yearly",
+  "everyMonthOnDay": "Every month on the {day}",
+  "@everyMonthOnDay": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "everyWeekOnDay": "Every week on {weekday}",
+  "@everyWeekOnDay": {
+    "placeholders": {
+      "weekday": {
+        "type": "String"
+      }
+    }
+  },
+  "everyYearOnDate": "Every year on {date}",
+  "@everyYearOnDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "nextPayment": "Next payment",
+  "repeats": "Repeats",
+  "yearlyCostPaid": "{yearly} a year. You’ve paid {paid} since {since}.",
+  "@yearlyCostPaid": {
+    "placeholders": {
+      "yearly": {
+        "type": "String"
+      },
+      "paid": {
+        "type": "String"
+      },
+      "since": {
+        "type": "String"
+      }
+    }
+  },
+  "history": "History",
+  "pause": "Pause",
+  "resume": "Resume",
+  "delete": "Delete",
+  "deleteRecurringConfirm": "Stop repeating “{title}”? Payments already recorded stay in Activity.",
+  "@deleteRecurringConfirm": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "noRecurringTitle": "No recurring payments yet",
+  "noRecurringBody": "Mark rent, subscriptions or your salary as repeating when you add them, and they show up here before they’re due.",
+  "repeatWeekly": "Weekly",
+  "repeatYearly": "Yearly",
+  "periodWeek": "Week",
+  "periodMonth": "Month",
+  "spendingByCategory": "Spending by category",
+  "inPeriodSoFar": "in {period} so far",
+  "@inPeriodSoFar": {
+    "placeholders": {
+      "period": {
+        "type": "String"
+      }
+    }
+  },
+  "thisWeek": "this week",
+  "otherCategories": "Other",
+  "incomeAndSpending": "Income and spending",
+  "trendSummaryKept": "You kept {amount} of your income over these six months.",
+  "@trendSummaryKept": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "trendSummaryOverspent": "You spent {amount} more than you earned over these six months.",
+  "@trendSummaryOverspent": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "insightLess": "You spent {percent}% less on {category} than {previous}.",
+  "@insightLess": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      },
+      "category": {
+        "type": "String"
+      },
+      "previous": {
+        "type": "String"
+      }
+    }
+  },
+  "insightMore": "You spent {percent}% more on {category} than {previous}.",
+  "@insightMore": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      },
+      "category": {
+        "type": "String"
+      },
+      "previous": {
+        "type": "String"
+      }
+    }
+  },
+  "previousWeek": "last week",
+  "previousYear": "last year",
+  "inMonth": "in {month}",
+  "@inMonth": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
+  "biggestExpenses": "Biggest expenses",
+  "noSpendingTitle": "Nothing spent yet",
+  "noSpendingBody": "Insights fill in as you add expenses.",
+  "shareOfSpending": "{percent}% of spending · {count, plural, =1{1 transaction} other{{count} transactions}}",
+  "@shareOfSpending": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "monthlyBudget": "Monthly budget",
+  "byWeek": "By week",
+  "chartCategorySummary": "{category} spending per week for the last five weeks, latest {amount}.",
+  "@chartCategorySummary": {
+    "placeholders": {
+      "category": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "chartTrendSummary": "Income and spending for the last six months.",
+  "incomeLabel": "Income",
+  "spendingLabel": "Spending",
+  "settingsGeneral": "General",
+  "settingsPreferences": "Preferences",
+  "settingsPrivacy": "Privacy",
+  "settingsData": "Data",
+  "baseCurrency": "Base currency",
+  "categories": "Categories",
+  "appearance": "Appearance",
+  "appLock": "App lock",
+  "securityOptions": "Security",
+  "backupAndExport": "Backup and export",
+  "demoData": "Demo data",
+  "aboutCent": "About Cent",
+  "privacyFooter": "Everything you enter stays on this phone. Cent has no account and no server.",
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "appearanceFooter": "Cent follows your system text size.",
+  "version": "Version {version}",
+  "@version": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutPrivacy": "Privacy",
+  "aboutPrivacyBody": "No account, no tracking, no server",
+  "aboutRates": "Exchange rates",
+  "aboutRatesBody": "ECB data via Frankfurter",
+  "aboutLicences": "Licences",
+  "aboutLicencesBody": "Hanken Grotesk (OFL) · Lucide icons (ISC)",
+  "loaded": "Loaded",
+  "on": "On",
+  "off": "Off",
+  "categoriesReorderFooter": "Drag to reorder. The order is used in the category picker.",
+  "newCategory": "New category",
+  "editCategory": "Edit category",
+  "deleteCategory": "Delete category",
+  "deleteCategoryConfirm": "Delete “{name}”? Its transactions move to {fallback}.",
+  "@deleteCategoryConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "fallback": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryNameHint": "Groceries, rent, gym…",
+  "reorderHandle": "Reorder {name}",
+  "@reorderHandle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "baseCurrencyFooter": "Totals, budgets and insights are shown in your base currency.",
+  "exchangeRates": "Exchange rates",
+  "rateLine": "1 {base} = {rate} {quote}",
+  "@rateLine": {
+    "placeholders": {
+      "base": {
+        "type": "String"
+      },
+      "rate": {
+        "type": "String"
+      },
+      "quote": {
+        "type": "String"
+      }
+    }
+  },
+  "auto": "Auto",
+  "manual": "Manual",
+  "ratesFooter": "Updated {when} from European Central Bank data via Frankfurter. Rates are saved so Cent works offline.",
+  "@ratesFooter": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "ratesNeverUpdated": "Not updated yet. Rates come from European Central Bank data via Frankfurter and are saved for offline use.",
+  "refreshRates": "Refresh rates now",
+  "refreshing": "Refreshing…",
+  "ratesFailed": "Couldn’t reach Frankfurter. Your saved rates are still in use.",
+  "baseChangeFailed": "Couldn’t load rates for {currency}. Check your connection and try again.",
+  "@baseChangeFailed": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "editRate": "Exchange rate",
+  "useAutomaticRate": "Use automatic rate",
+  "rateHint": "How many {quote} for 1 {base}",
+  "@rateHint": {
+    "placeholders": {
+      "quote": {
+        "type": "String"
+      },
+      "base": {
+        "type": "String"
+      }
+    }
+  },
+  "backupSection": "Backup",
+  "spreadsheetSection": "Spreadsheet",
+  "exportBackup": "Export backup",
+  "exportBackupBody": "All accounts, transactions and settings as a .cent file",
+  "importBackup": "Import backup",
+  "importBackupBody": "Replace what’s on this phone with a .cent file",
+  "lastBackup": "Last backup: {date}. Use AirDrop or Files to move it to a new phone.",
+  "@lastBackup": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noBackupYet": "No backup yet. Use AirDrop or Files to move it to a new phone.",
+  "exportCsv": "Export transactions",
+  "exportCsvBody": "CSV for Numbers, Excel or Google Sheets",
+  "clearDemoData": "Clear demo data",
+  "clearDemoDataBody": "Start fresh with your own accounts",
+  "loadDemoData": "Load demo data",
+  "loadDemoDataBody": "Three months of sample activity to explore",
+  "loadDemoConfirm": "Demo data replaces everything on this phone.",
+  "clearDemoConfirm": "This removes the demo accounts, transactions, budgets and goals.",
+  "eraseAll": "Erase all data",
+  "eraseAllFooter": "This can’t be undone. Export a backup first.",
+  "eraseAllConfirm": "Everything on this phone will be deleted. This can’t be undone.",
+  "importConfirm": "Replace everything on this phone with the backup from {date}? It has {count} transactions.",
+  "@importConfirm": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importReplace": "Replace",
+  "importDone": "Backup restored",
+  "importFailed": "That file isn’t a Cent backup.",
+  "accountsCount": "{count}",
+  "@accountsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "categoryUsage": "{count, plural, =0{None this month} =1{1 this month} other{{count} this month}}",
+  "@categoryUsage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "faceIdLock": "Face ID lock",
+  "appLockFooter": "Cent asks for {method} when it opens. Your device passcode works as a fallback.",
+  "@appLockFooter": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "biometricsFaceId": "Face ID",
+  "biometricsGeneric": "your fingerprint or face",
+  "requireAfter": "Require {method}",
+  "@requireAfter": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "lockImmediately": "Immediately",
+  "lockAfterMinutes": "{count, plural, =1{After 1 minute} other{After {count} minutes}}",
+  "@lockAfterMinutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lockAfterHour": "After 1 hour",
+  "blurInSwitcher": "Blur in app switcher",
+  "blurInSwitcherFooter": "Hides your balances when you switch between apps.",
+  "unlockReason": "Unlock Cent to see your finances",
+  "lockedTitle": "Cent is locked",
+  "unlock": "Unlock",
+  "lockUnavailable": "Set up a screen lock on this phone to use app lock.",
+  "welcomeTitle": "Easy financial planning.",
+  "welcomeBody": "Track spending, budgets and goals in one place. Everything stays on your phone.",
+  "getStarted": "Get started",
+  "welcomeFootnote": "No account. No bank login.",
+  "continueLabel": "Continue",
+  "chooseCurrencyTitle": "Choose your currency",
+  "chooseCurrencyBody": "Totals, budgets and insights use it. You can change it later in Settings.",
+  "searchCurrencies": "Search currencies",
+  "firstAccountTitle": "Add your first account",
+  "firstAccountBody": "Start with the account you use most. You can add more later.",
+  "defaultAccountName": "Main account",
+  "howToStartTitle": "How do you want to start?",
+  "howToStartBody": "You can switch any time in Settings.",
+  "demoOptionTitle": "Explore with demo data",
+  "demoOptionBody": "Three months of realistic transactions, budgets and goals. Clear it with one tap.",
+  "freshOptionTitle": "Start fresh",
+  "freshOptionBody": "Begin with an empty app and just your {account}.",
+  "@freshOptionBody": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "lockTitle": "Keep Cent private",
+  "lockBody": "Lock the app with {method} so your finances stay private, even if someone else picks up your phone.",
+  "@lockBody": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "turnOnLock": "Turn on {method}",
+  "@turnOnLock": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "notNow": "Not now",
+  "stepOf": "Step {step} of {total}",
+  "@stepOf": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
+}
